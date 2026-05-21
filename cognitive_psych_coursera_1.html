@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to Cognitive Psychology & Neuropsychology</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --surface: #eceae4;
+    --border: #c0bdb4;
+    --accent: #5a7d00;
+    --accent2: #006fa0;
+    --accent3: #b55200;
+    --text: #1a1916;
+    --text-dim: #3a3830;
+    --tag-bg: #e4e2db;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    min-height: 100vh;
+  }
+
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 64px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(90,125,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-meta::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 700px;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+
+  .header-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 29px; font-weight: 700;
+    color: var(--accent2);
+  }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 200px);
+  }
+
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 40px 0;
+    position: sticky;
+    top: 0;
+    height: fit-content;
+  }
+  .nav-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-dim);
+    padding: 0 32px; margin-bottom: 16px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 32px; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border-left: 2px solid transparent;
+    text-decoration: none; color: var(--text-dim);
+  }
+  .nav-item:hover, .nav-item.active {
+    background: rgba(90,125,0,0.06);
+    color: var(--text); border-left-color: var(--accent);
+  }
+  .nav-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--accent); min-width: 24px;
+  }
+  .nav-title { font-size: 14px; line-height: 1.3; }
+
+  .content { padding: 48px 64px; }
+
+  .module {
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+  .module:nth-child(1) { animation-delay: 0.05s; }
+  .module:nth-child(2) { animation-delay: 0.1s; }
+  .module:nth-child(3) { animation-delay: 0.15s; }
+  .module:nth-child(4) { animation-delay: 0.2s; }
+  .module:nth-child(5) { animation-delay: 0.25s; }
+  .module:nth-child(6) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .module:hover { border-color: #b0ada4; }
+
+  .module-header {
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 28px 32px;
+    background: var(--surface);
+    cursor: pointer; user-select: none;
+  }
+  .module-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 49px; font-weight: 900; line-height: 1;
+    color: var(--border); min-width: 56px;
+    transition: color 0.2s;
+  }
+  .module:hover .module-number { color: #807d74; }
+  .module-info { flex: 1; }
+
+  .module-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px; font-weight: 700;
+    line-height: 1.3; margin-bottom: 10px;
+  }
+  .module-desc {
+    font-size: 14.5px; color: var(--text-dim); line-height: 1.7;
+  }
+
+  .module-chips {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;
+  }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em;
+    padding: 4px 10px;
+    background: var(--tag-bg); border: 1px solid var(--border);
+    color: var(--text-dim); border-radius: 2px;
+  }
+  .chip.video { border-color: #5a7d0025; color: var(--accent); }
+  .chip.read  { border-color: #006fa025; color: var(--accent2); }
+  .chip.quiz  { border-color: #b5520025; color: #a04400; }
+
+  .module-time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+    text-align: right; white-space: nowrap; padding-top: 4px;
+  }
+
+  .module-body {
+    border-top: 1px solid var(--border);
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .module-body.open { max-height: 3000px; }
+  .module-body-inner { padding: 28px 32px 36px; }
+
+  /* Summary block */
+  .summary-block {
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: #eeecea;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 2px 2px 0;
+  }
+  .summary-block p {
+    font-size: 15px; line-height: 1.85; color: #2a2820;
+    margin-bottom: 12px;
+  }
+  .summary-block p:last-child { margin-bottom: 0; }
+
+  /* Section */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-dim);
+    margin-bottom: 10px; margin-top: 24px;
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  /* Concept grid */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .concept-card {
+    background: #e8e5de;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 14px 16px;
+  }
+  .concept-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--accent2);
+    margin-bottom: 6px; letter-spacing: 0.05em;
+  }
+  .concept-desc {
+    font-size: 13.5px; color: var(--text-dim); line-height: 1.6;
+  }
+
+  /* Item list */
+  .item-list { list-style: none; }
+  .item-list li {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 7px 0; border-bottom: 1px solid #ccc9c0;
+    font-size: 14px; color: var(--text);
+  }
+  .item-list li:last-child { border-bottom: none; }
+  .item-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0; margin-top: 6px;
+  }
+  .item-dot.blue { background: var(--accent2); }
+  .item-dot.orange { background: #f0a064; }
+  .item-duration {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: var(--text-dim);
+    margin-left: auto; white-space: nowrap;
+  }
+
+  /* External link */
+  .ext-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--accent3);
+    text-decoration: none; padding: 3px 0;
+    border-bottom: 1px dashed #b5520025;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .ext-link:hover { color: #7a3200; border-color: #a04400; }
+  .ext-link::before { content: '↗'; font-size: 11px; }
+
+  .link-list { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .link-item {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: 10px 14px;
+    background: #eceae4;
+    border: 1px solid #d4d1ca;
+    border-radius: 2px;
+  }
+  .link-item-desc { font-size: 13.5px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid #1a1a1a; margin: 20px 0; }
+
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 64px;
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  .footer-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+  }
+  .footer-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--accent);
+    text-decoration: none; letter-spacing: 0.05em;
+  }
+  .footer-link:hover { text-decoration: underline; }
+
+  @media (max-width: 800px) {
+    .header { padding: 32px 24px 28px; }
+    .main { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .content { padding: 32px 24px; }
+    .footer { padding: 24px; }
+    .module-header { flex-direction: column; gap: 12px; }
+    .module-number { font-size: 37px; }
+    .concept-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-meta">University of Cambridge &nbsp;·&nbsp; Coursera</div>
+  <h1>Introduction to<br><em>Cognitive Psychology</em><br>& Neuropsychology</h1>
+  <div class="header-stats">
+    <div class="stat">
+      <span class="stat-val">6</span>
+      <span class="stat-label">Modules</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">~9h</span>
+      <span class="stat-label">총 학습시간</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">4.8</span>
+      <span class="stat-label">평점 (83 reviews)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">5</span>
+      <span class="stat-label">Knowledge Checks</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <nav class="sidebar">
+    <div class="nav-label">모듈 목차</div>
+    <a class="nav-item" href="#mod0">
+      <span class="nav-num">00</span>
+      <span class="nav-title">Welcome</span>
+    </a>
+    <a class="nav-item" href="#mod1">
+      <span class="nav-num">01</span>
+      <span class="nav-title">인지심리학이란?</span>
+    </a>
+    <a class="nav-item" href="#mod2">
+      <span class="nav-num">02</span>
+      <span class="nav-title">연구 방법론</span>
+    </a>
+    <a class="nav-item" href="#mod3">
+      <span class="nav-num">03</span>
+      <span class="nav-title">언어심리학</span>
+    </a>
+    <a class="nav-item" href="#mod4">
+      <span class="nav-num">04</span>
+      <span class="nav-title">기억·지각·감각</span>
+    </a>
+    <a class="nav-item" href="#mod5">
+      <span class="nav-num">05</span>
+      <span class="nav-title">주의·의식·자유의지</span>
+    </a>
+  </nav>
+
+  <div class="content">
+
+    <!-- ── MODULE 0 ── -->
+    <div class="module" id="mod0">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">00</div>
+        <div class="module-info">
+          <div class="module-tag">Orientation &nbsp;·&nbsp; 1h</div>
+          <div class="module-title">Welcome to the Course</div>
+          <div class="module-desc">강의 목표 설명, 읽기 자료 안내, 학습자 커뮤니티 소개.</div>
+          <div class="module-chips">
+            <span class="chip video">▶ 영상 1편</span>
+            <span class="chip read">📄 읽기 2편</span>
+          </div>
+        </div>
+        <div class="module-time">1 h ▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-body-inner">
+          <div class="summary-block">
+            <p><strong style="color:#1a1916">강의 개요.</strong> 이 강의는 케임브리지 대학교 전문 계속교육 과정(PACE)에서 제공하는 인지심리학·신경심리학 입문 강좌다. 심리학 사전 지식 없이 누구나 수강 가능하며, 심리학이 어떻게 독립 과학으로 탄생했는지부터 현재 연구의 첨단까지를 한 흐름으로 다룬다. 강사는 케임브리지 PACE 소속 Dr. Giulia Mangiaracina다.</p>
+            <p><strong style="color:#1a1916">다루는 핵심 기능.</strong> 인간 인지의 네 가지 주요 영역인 기억(memory), 언어(language), 주의(attention), 지각(perception)을 순서대로 탐구한다. 각 기능이 독립적으로 작동하는 방식뿐 아니라 서로 어떻게 상호작용하는지도 함께 다룬다. 예를 들어 언어가 색깔 지각을 바꾸고, 주의가 기억 형성을 결정하며, 지각이 기억에 영향을 주는 방식들이 실험 증거와 함께 설명된다.</p>
+            <p><strong style="color:#1a1916">강의 구성과 방식.</strong> 6개 모듈에 걸쳐 약 8~9시간 분량의 영상이 제공되며, 각 모듈에는 심화 읽기 자료와 실습 활동이 포함된다. 매 모듈 말미에 Knowledge Check 퀴즈로 이해도를 확인한다. Stroop Test나 청각 착시 체험처럼 학습자가 직접 참여하는 심리학 실험이 여러 차례 등장해, 개념을 추상적으로 배우는 것이 아니라 직접 경험하는 방식으로 설계되어 있다.</p>
+            <p><strong style="color:#1a1916">수강 대상과 활용.</strong> 심리학에 관심 있는 일반인, 관련 분야 입문자, 진로 탐색 중인 학생 모두를 대상으로 한다. 이 강의는 케임브리지 대학교의 'The Science of Mind and Decision Making' 특화 과정(Specialization)의 첫 번째 코스로, 이후 신경심리학·감정심리학 등 심화 과정으로 이어진다.</p>
+          </div>
+          <div class="section-label">🎬 영상</div>
+          <ul class="item-list">
+            <li><span class="item-dot"></span>Welcome — 강의 소개 및 학습 방향 안내<span class="item-duration">1 min</span></li>
+          </ul>
+          <div class="section-label">📄 읽기</div>
+          <ul class="item-list">
+            <li><span class="item-dot blue"></span>Course Outline — 6개 모듈 개요 및 학습 목표 정리<span class="item-duration">30 min</span></li>
+            <li><span class="item-dot blue"></span>Readings — 추천 참고 문헌 목록<span class="item-duration">30 min</span></li>
+          </ul>
+          <div class="section-label">💬 토론</div>
+          <ul class="item-list">
+            <li><span class="item-dot orange"></span>Introductions — 수강 동기 및 배경 공유<span class="item-duration">10 min</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODULE 1 ── -->
+    <div class="module" id="mod1">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">01</div>
+        <div class="module-info">
+          <div class="module-tag">Module 1 &nbsp;·&nbsp; 1h</div>
+          <div class="module-title">인지심리학이란? — 역사와 핵심 논쟁</div>
+          <div class="module-desc">심리학이 독립 학문으로 성립한 과정과, 현재 연구를 지배하는 4가지 핵심 논쟁을 다룬다.</div>
+          <div class="module-chips">
+            <span class="chip video">▶ 영상 3편 · 34 min</span>
+            <span class="chip read">📄 읽기 1편</span>
+            <span class="chip quiz">✎ 퀴즈</span>
+          </div>
+        </div>
+        <div class="module-time">1 h ▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-body-inner">
+
+          <div class="summary-block">
+            <p><strong style="color:#1a1916">인지심리학의 탄생과 역사.</strong> 심리학은 오랫동안 철학의 하위 분야였다. 17~18세기 합리론(Descartes: 지식은 선천적 이성에서 나온다)과 경험론(Locke: 마음은 백지이며 경험이 전부다)의 대립이 근대 심리학의 철학적 토대를 형성했다. 1879년 Wilhelm Wundt가 라이프치히에 최초의 실험심리학 연구실을 열면서 심리학은 독립 과학으로 분리되었다. 20세기 초 Watson과 Skinner를 중심으로 한 행동주의(Behaviorism)는 내면의 정신 상태는 관찰 불가능하다며 배제하고 오직 자극-반응만을 연구했다. 그러나 1950년대 인지혁명(Cognitive Revolution)이 일어나며 기억·언어·사고·이미지 등 내적 과정이 다시 정당한 연구 대상이 되었다. Tolman의 인지 지도 연구, Miller의 단기기억 용량(7±2) 연구, Chomsky의 언어 비판이 이 전환의 주요 계기였다.</p>
+
+            <p><strong style="color:#1a1916">인지심리학이란 무엇인가.</strong> 인지심리학은 인간의 마음을 정보 처리 시스템으로 본다. 입력(감각 정보) → 처리(기억·언어·주의·지각) → 출력(행동·반응)의 흐름을 연구하며, 이 과정에서 뇌가 어떤 역할을 하는지를 탐구한다. 인지심리학자들은 행동 실험뿐 아니라 뇌 영상, 신경심리학 사례 연구 등 다양한 방법을 결합해 마음의 구조와 작동 방식을 밝힌다.</p>
+
+            <p><strong style="color:#1a1916">핵심 논쟁 ①: 본성 vs. 양육 (Nature vs. Nurture).</strong> 성격·지능·언어 능력이 유전(본성)으로 결정되는가, 환경과 경험(양육)으로 만들어지는가. 이 논쟁은 심리학 역사상 가장 오래된 질문이다. 일란성 쌍둥이를 서로 다른 환경에서 키운 연구들은 지능·성격에 유전이 상당히 기여함을 보여주지만, 동시에 환경의 영향도 무시할 수 없음을 드러낸다. 현재 주류 견해는 유전과 환경이 서로 상호작용하며 발달을 형성한다는 '양자 상호작용 모델'이다. 예컨대 유전적으로 우울증에 취약한 사람도 지지적인 환경에서는 발병하지 않을 수 있다.</p>
+
+            <p><strong style="color:#1a1916">핵심 논쟁 ②: 뇌-마음-행동 관계.</strong> 마음은 뇌의 물리적 작용과 동일한가(물리주의·동일론), 아니면 뇌와 독립적으로 존재하는가(이원론). Descartes는 마음과 몸이 분리된 실체라는 심신이원론을 주장했지만, 현대 신경과학은 특정 뇌 영역의 손상이 특정 정신 기능을 잃게 함을 반복해서 보여준다. 그러나 '의식'과 '주관적 경험'(뭔가가 이런 느낌이라는 것)의 신경 기반은 여전히 설명하기 어렵다. 이를 철학자 David Chalmers는 '의식의 어려운 문제(Hard Problem of Consciousness)'라 불렀다.</p>
+
+            <p><strong style="color:#1a1916">핵심 논쟁 ③: 성인 뇌의 가소성 (Brain Plasticity).</strong> 20세기 중반까지도 성인의 뇌는 고정된 구조물이라는 관점이 지배적이었다. 그러나 런던 택시 기사의 해마(hippocampus)가 일반인보다 발달해 있다는 연구(Maguire et al., 2000), 뇌졸중 후 재활 치료로 다른 뇌 영역이 기능을 대신하는 사례, 명상 수련자의 뇌 구조 변화 등이 성인 뇌도 경험에 따라 지속적으로 재편됨을 입증했다. 뇌 가소성은 인지 재활, 교육, 노화 연구의 핵심 개념이다.</p>
+
+            <p><strong style="color:#1a1916">핵심 논쟁 ④: 모듈식 마음 (Modular Mind).</strong> 철학자 Jerry Fodor(1983)는 마음이 언어·시각·얼굴 인식 등 특화된 독립 모듈의 집합으로 구성된다는 모듈성 이론을 제안했다. 각 모듈은 특정 유형의 입력만 처리하고, 빠르고 자동적이며, 의식적 통제가 어렵다. 이에 대한 증거로는 얼굴 인식만 손상되는 안면인식불능증(prosopagnosia)처럼, 특정 기능만 선택적으로 손상되는 신경심리학 사례들이 있다. 반면 최근 신경과학은 많은 뇌 영역이 여러 기능에 재사용(neural reuse)됨을 보여주며, 순수 모듈론의 한계를 지적한다. 실제로는 모듈식 처리와 분산 처리가 공존한다는 중간 견해가 현재 주류다.</p>
+          </div>
+
+          <div class="section-label">🎬 영상 구성</div>
+          <ul class="item-list">
+            <li><span class="item-dot"></span>Welcome to Unit 1 — 모듈 개요<span class="item-duration">1 min</span></li>
+            <li><span class="item-dot"></span>What is Cognitive Psychology? — 학문의 기원과 정의<span class="item-duration">11 min</span></li>
+            <li><span class="item-dot"></span>Key Debates in Cognitive Psychology — 4대 논쟁 심화<span class="item-duration">22 min</span></li>
+          </ul>
+
+          <div class="section-label">🔑 핵심 개념</div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <div class="concept-name">인지혁명 (1950s)</div>
+              <div class="concept-desc">행동주의의 한계를 극복하고, 기억·언어 등 내적 과정을 과학적으로 연구하기 시작한 전환점.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">Nature vs. Nurture</div>
+              <div class="concept-desc">유전 대 환경의 논쟁. 현재는 상호작용 모델이 주류. 쌍둥이 연구가 핵심 방법론.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">Brain Plasticity</div>
+              <div class="concept-desc">성인 뇌도 학습과 경험에 의해 신경 연결이 변한다. 재활 치료의 이론적 근거.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">Modular Mind</div>
+              <div class="concept-desc">Fodor 제안. 언어·시각 등 기능이 독립 모듈로 처리됨. vs. 분산 처리 관점.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODULE 2 ── -->
+    <div class="module" id="mod2">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">02</div>
+        <div class="module-info">
+          <div class="module-tag">Module 2 &nbsp;·&nbsp; 1h</div>
+          <div class="module-title">마음을 어떻게 측정하나? — 심리학 연구 방법</div>
+          <div class="module-desc">뇌 손상 환자 연구부터 최신 뇌 영상 기술까지, 인지심리학이 마음을 측정하는 방법들을 망라한다.</div>
+          <div class="module-chips">
+            <span class="chip video">▶ 영상 3편 · 36 min</span>
+            <span class="chip read">📄 읽기 1편</span>
+            <span class="chip quiz">✎ 퀴즈</span>
+          </div>
+        </div>
+        <div class="module-time">1 h ▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-body-inner">
+
+          <div class="summary-block">
+            <p><strong style="color:#1a1916">왜 연구 방법론이 중요한가.</strong> 인지심리학은 직접 눈에 보이지 않는 '마음'을 연구 대상으로 삼는다. 따라서 어떤 방법으로 마음을 측정하느냐에 따라 얻을 수 있는 결론이 완전히 달라진다. 이 모듈은 행동 실험부터 최첨단 뇌 영상 기술, 뇌 자극 기법까지 인지심리학이 활용하는 주요 방법론 전체를 비판적 시각으로 검토한다. 각 기법의 장점과 한계를 이해하는 것이 이 모듈의 핵심 목표다.</p>
+
+            <p><strong style="color:#1a1916">신경심리학적 접근: 병변 연구와 사례 연구.</strong> 뇌의 특정 부위가 손상된 환자를 연구해 그 영역의 정상 기능을 역추론하는 방법이다. 1861년 Paul Broca는 말은 이해하지만 발화를 못하는 환자 'Tan'을 연구해 좌측 전두엽 하부가 언어 생성에 필수적임을 밝혔다(브로카 영역). 이후 Wernicke는 말은 유창하지만 의미 없는 환자를 통해 언어 이해 영역(베르니케 영역)을 발견했다. 유명한 사례 'HM'은 해마 절제 후 새로운 장기기억을 전혀 형성하지 못했는데, 이 사례는 해마가 기억 형성에 필수적임을 결정적으로 보여줬다. 병변 연구의 한계는 손상 범위가 부정확하고 개인차가 크다는 점이다.</p>
+
+            <p><strong style="color:#1a1916">구조 영상: MRI.</strong> 자기공명영상(MRI)은 강한 자기장과 전파를 이용해 뇌의 3D 구조를 밀리미터 단위로 시각화한다. 방사선이 없어 반복 촬영이 가능하며, 뇌 종양·출혈·위축·이상 구조를 탐지한다. MRI는 '무엇이 있는지'는 보여주지만 '무엇이 활동하는지'는 알려주지 않는다.</p>
+
+            <p><strong style="color:#1a1916">기능 영상: fMRI와 PET.</strong> fMRI(기능적 자기공명영상)는 산소화 헤모글로빈의 혈류 변화(BOLD 신호)를 추적해 특정 인지 과제 수행 중 어느 뇌 영역이 활성화되는지를 파악한다. 공간 해상도는 약 1~3mm로 높지만, 혈류 변화는 신경 활동보다 수 초 늦게 나타나 시간 해상도는 낮다. PET(양전자방출단층촬영)는 방사성 포도당 유사체를 주입해 뇌 부위별 대사 활동을 측정한다. fMRI보다 침습적이나 신경전달물질 수용체 분포 등 fMRI로 볼 수 없는 분자 수준의 정보를 얻을 수 있다.</p>
+
+            <p><strong style="color:#1a1916">전기·자기 기법: EEG와 MEG.</strong> 뇌파(EEG)는 두피 전극으로 수만 개 뉴런의 동기화된 전기 신호를 밀리초 단위로 기록한다. 인지 처리의 정확한 타이밍(예: 단어를 보고 400ms 후 나타나는 N400 성분)을 추적하는 데 강점이 있다. MEG(자기뇌파)는 신경 전류가 만드는 자기장을 측정하며, EEG보다 두개골의 왜곡 영향을 덜 받아 신호 발생 위치 추정이 더 정확하다. 단세포 기록(single-cell recording)은 주로 동물 연구에서 미세 전극을 뇌에 삽입해 개별 뉴런의 발화 패턴을 측정한다.</p>
+
+            <p><strong style="color:#1a1916">뇌 자극 기법: TMS와 tDCS — 상관관계에서 인과관계로.</strong> 영상 기법들은 뇌 영역과 인지 기능의 '상관관계'를 보여줄 뿐, 해당 영역이 그 기능에 '필수적'인지는 증명하지 못한다. TMS(경두개 자기 자극)는 코일에서 발생한 자기 펄스로 특정 피질 영역을 일시적으로 비활성화('가상 병변')해 해당 영역의 인과적 역할을 검증한다. 예를 들어 시각 피질에 TMS를 가하면 일시적으로 시력이 저하된다. tDCS(경두개 직류 자극)는 약한 직류 전류(1~2mA)를 흘려 신경 흥분성을 높이거나 낮춰 기억·학습·언어 처리 향상 가능성을 연구한다. 두 기법 모두 비침습적이며 인과관계를 탐색할 수 있다는 점에서 영상 기법과 상호 보완적이다.</p>
+          </div>
+
+          <div class="section-label">🎬 영상 구성</div>
+          <ul class="item-list">
+            <li><span class="item-dot"></span>Welcome to Unit 2<span class="item-duration">2 min</span></li>
+            <li><span class="item-dot"></span>Research Methods — 병변 연구, MRI, fMRI, PET 설명<span class="item-duration">23 min</span></li>
+            <li><span class="item-dot"></span>Research Methods (Part 2) — EEG, MEG, TMS, tDCS<span class="item-duration">11 min</span></li>
+          </ul>
+
+          <div class="section-label">🔑 기법 비교</div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <div class="concept-name">MRI</div>
+              <div class="concept-desc">뇌 구조 파악. 고공간 해상도. 방사선 없음.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">fMRI</div>
+              <div class="concept-desc">혈류(BOLD) 측정 → 기능 영역 파악. 공간↑ 시간↓.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">PET</div>
+              <div class="concept-desc">방사성 추적자로 포도당 대사 측정. 공간↑ 시간↓.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">EEG / MEG</div>
+              <div class="concept-desc">전기·자기 신호 측정. 시간 해상도↑(밀리초). 공간↓.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">TMS</div>
+              <div class="concept-desc">자기 펄스로 피질 활동 일시 억제 → 인과 검증.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">tDCS</div>
+              <div class="concept-desc">직류 전류로 신경 흥분성 조절. 학습·기억 연구.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODULE 3 ── -->
+    <div class="module" id="mod3">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">03</div>
+        <div class="module-info">
+          <div class="module-tag">Module 3 &nbsp;·&nbsp; 2h</div>
+          <div class="module-title">인간 언어의 심리학 — 언어 습득과 처리</div>
+          <div class="module-desc">언어는 타고나는가 배우는가. 언어 습득 이론과 언어의 구성 요소를 탐구하며, Stroop Test 실습을 포함한다.</div>
+          <div class="module-chips">
+            <span class="chip video">▶ 영상 2편 · 20 min</span>
+            <span class="chip read">📄 읽기+활동 2편</span>
+            <span class="chip quiz">✎ 퀴즈</span>
+          </div>
+        </div>
+        <div class="module-time">2 h ▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-body-inner">
+
+          <div class="summary-block">
+            <p><strong style="color:#1a1916">언어는 인지심리학의 왜 중요한 주제인가.</strong> 언어는 인간만이 가진 가장 복잡한 인지 능력 중 하나다. 아이는 누군가 체계적으로 가르치지 않아도 생후 3~4년 안에 모국어를 거의 완벽히 습득한다. 이 놀라운 능력이 어디서 오는지를 두고 수십 년간 격렬한 논쟁이 이어졌으며, 그 답에 따라 마음의 본질에 대한 관점도 달라진다. 이 모듈은 언어 습득 이론, 언어 발달 맥락, 언어의 구조, 그리고 언어가 사고와 지각에 미치는 영향을 다룬다.</p>
+
+            <p><strong style="color:#1a1916">선천론: Chomsky의 보편 문법.</strong> Noam Chomsky는 1950년대 행동주의적 언어 학습 이론(자극-반응의 반복으로 언어를 배운다는 Skinner의 설명)을 정면으로 반박했다. Chomsky는 모든 인간 언어에 공통된 심층 구조(deep structure)가 있으며, 아이는 이를 처리할 언어 습득 장치(Language Acquisition Device, LAD)를 선천적으로 갖고 태어난다고 주장했다. 핵심 근거는 '빈곤한 자극의 논증(Poverty of the Stimulus)'이다: 아이가 노출되는 언어 입력은 불완전하고 오류가 많은데도, 아이는 명시적으로 배운 적 없는 복잡한 문법 규칙을 자연스럽게 구사한다. 이는 언어를 처리하는 선천적 능력 없이는 설명하기 어렵다.</p>
+
+            <p><strong style="color:#1a1916">후천론과 사회-인지적 접근: 공동 주의의 역할.</strong> 반면 Tomasello 같은 연구자들은 언어 습득이 사회적 맥락과 공동 주의(shared attentional orienting) 없이는 불가능하다고 주장한다. 공동 주의란 영아와 양육자가 동시에 같은 대상에 시선을 맞추는 행동이다. 생후 9~12개월부터 나타나며, 양육자가 물체를 가리키며 이름을 말할 때 아이가 그 시선을 따라가는 것이 단어 학습의 출발점이 된다. MIT 연구자 Deb Roy는 아들의 출생부터 3세까지 집 전체를 녹화(9만 시간)해 최초로 언어 습득 전 과정을 데이터로 분석했고, 아이가 처음 단어를 말하기 전 수개월간 그 단어가 어떤 맥락에서 들렸는지가 습득에 결정적임을 보여줬다.</p>
+
+            <p><strong style="color:#1a1916">결정적 시기: Patricia Kuhl의 음소 연구.</strong> 언어학자 Patricia Kuhl의 실험은 생후 6~12개월이 음소(phoneme) 지각의 결정적 시기(critical period)임을 입증했다. 이 시기 영아는 모든 언어의 소리를 구별할 수 있는 '세계 시민적 청취자'다. 그러나 이후 모국어의 음소 체계에 특화되면서 외국어의 미세한 소리 차이를 구별하는 능력이 급격히 저하된다. 일본어 영아는 처음에 'r'과 'l'을 완벽히 구별하지만 12개월 이후 점점 구별하지 못하게 된다. 이는 언어 습득에 생물학적 민감기가 존재함을 시사한다.</p>
+
+            <p><strong style="color:#1a1916">언어의 4가지 구성 요소.</strong> 언어학은 언어를 네 층위로 분석한다. 음운론(Phonology)은 소리의 규칙 체계(한국어에서 '봄'과 '뽐'은 다른 단어). 형태론(Morphology)은 단어의 내부 구조(접사, 어근: '먹다' → '먹었다' → '먹었겠다'). 의미론(Semantics)은 단어와 문장의 의미. 통사론(Syntax)은 문장 구조와 문법 규칙이다. 이 네 층위는 독립적으로 작동하는 동시에 강하게 상호작용하며, 구문이 의미 해석을 좌우하는 '정원길 문장(garden path sentence)' 같은 언어 착각 현상이 그 증거다.</p>
+
+            <p><strong style="color:#1a1916">언어가 사고와 지각을 형성한다 — Stroop 효과와 언어 상대성.</strong> 언어는 단순히 생각을 전달하는 도구가 아니라, 지각과 사고 자체를 바꾼다. Lera Boroditsky의 비교문화 연구는 언어가 색깔 지각, 공간 방향 감각, 시간 인식 방식까지 변화시킴을 보여준다. 러시아어 사용자는 밝은 파랑과 어두운 파랑에 별도 단어가 있어 그 경계를 더 빠르게 지각한다. Stroop Test는 이 상호작용의 또 다른 증거다: '빨강'이라는 단어를 파란 잉크로 썼을 때, 잉크 색을 말하는 과제가 느려지는 현상이다. 언어적 의미 처리가 자동적으로 활성화되어 지각 판단을 방해하기 때문이다. 이 실험은 수업 활동에서 직접 체험한다.</p>
+          </div>
+
+          <div class="section-label">🎬 영상 구성</div>
+          <ul class="item-list">
+            <li><span class="item-dot"></span>Welcome to Unit 3<span class="item-duration">2 min</span></li>
+            <li><span class="item-dot"></span>Language Development — 언어 습득 이론 및 발달 단계<span class="item-duration">19 min</span></li>
+          </ul>
+
+          <div class="section-label">🔗 보충 영상 자료</div>
+          <div class="link-list">
+            <div class="link-item">
+              <a class="ext-link" href="https://www.ted.com/talks/deb_roy_the_birth_of_a_word" target="_blank">Deb Roy: The Birth of a Word (TED)</a>
+              <span class="link-item-desc">아들의 언어 습득 과정을 3년간 영상으로 기록·분석. 공동 주의와 어휘 획득 메커니즘을 데이터로 시각화.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/bXQAFv88UtU" target="_blank">Chomsky — Universal Grammar</a>
+              <span class="link-item-desc">보편 문법 이론 소개. 모든 언어에 공통된 심층 구조가 있으며 인간은 이를 선천적으로 갖고 태어난다는 주장.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://www.ted.com/talks/patricia_kuhl_the_linguistic_genius_of_babies" target="_blank">Patricia Kuhl — The Linguistic Genius of Babies (TED)</a>
+              <span class="link-item-desc">영아의 음소 지각 결정적 시기 연구. 생후 6~12개월 사이 모국어 음소 지각이 특화되는 과정.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://www.ted.com/talks/lera_boroditsky_how_language_shapes_the_way_we_think" target="_blank">Lera Boroditsky — How Language Shapes the Way We Think (TED)</a>
+              <span class="link-item-desc">언어가 색깔·공간·시간 지각과 사고 방식을 어떻게 변화시키는지 다양한 언어 집단 연구로 설명.</span>
+            </div>
+          </div>
+
+          <div class="section-label">🔑 핵심 개념</div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <div class="concept-name">Universal Grammar</div>
+              <div class="concept-desc">Chomsky. 인간은 언어 습득 장치(LAD)를 갖고 태어난다. 빈곤한 자극 논증.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">공동 주의 (Shared Attention)</div>
+              <div class="concept-desc">영아-양육자가 같은 대상에 함께 주의. 단어 연결의 사회적 메커니즘.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">결정적 시기 (Critical Period)</div>
+              <div class="concept-desc">음소 지각은 생후 6~12개월. 이후 모국어에 특화되어 외국어 음소 구별 어려워짐.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">Stroop Effect</div>
+              <div class="concept-desc">잉크 색과 색 이름이 충돌 시 반응 지연. 언어 처리의 자동성과 지각 간섭을 보여주는 실험.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODULE 4 ── -->
+    <div class="module" id="mod4">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">04</div>
+        <div class="module-info">
+          <div class="module-tag">Module 4 &nbsp;·&nbsp; 2h</div>
+          <div class="module-title">기억·지각·교차감각 상호작용</div>
+          <div class="module-desc">작업기억 모델, 청각·시각 지각의 원리, 그리고 서로 다른 감각이 어떻게 서로에게 영향을 미치는지 탐구한다.</div>
+          <div class="module-chips">
+            <span class="chip video">▶ 영상 4편 · 32 min</span>
+            <span class="chip read">📄 읽기+활동 2편</span>
+            <span class="chip quiz">✎ 퀴즈</span>
+          </div>
+        </div>
+        <div class="module-time">2 h ▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-body-inner">
+
+          <div class="summary-block">
+            <p><strong style="color:#1a1916">왜 '기억'을 새롭게 이해해야 하는가.</strong> 일상적으로 기억은 '저장 장치'처럼 생각된다. 그러나 인지심리학은 기억이 단순한 녹화·재생이 아니라 능동적 구성(construction) 과정임을 거듭 보여준다. 이 모듈은 기억의 구조적 모델인 작업기억, 청각과 시각 지각의 원리, 그리고 서로 다른 감각이 어떻게 상호 침투하는지(교차감각 효과)를 탐구한다. 기억·언어·지각이 별개로 작동하지 않고 하나의 통합 시스템으로 움직인다는 것이 이 모듈의 핵심 메시지다.</p>
+
+            <p><strong style="color:#1a1916">작업기억 모델: Baddeley & Hitch(1974).</strong> 기존의 '단기기억(Short-term Memory)' 개념은 정보를 수동적으로 잠깐 보관하는 단일 저장소로 이해했다. Baddeley와 Hitch는 이를 능동적 처리와 일시 저장이 동시에 일어나는 다성분 시스템인 '작업기억(Working Memory)'으로 대체했다. 구성 요소는 네 가지다. ① 음운 루프(Phonological Loop): 언어·숫자 정보를 내적 음성으로 유지·반복한다. 전화번호를 외울 때 속으로 중얼거리는 것이 이 루프의 작동이다. 용량은 약 7±2개 항목(Miller's Law). ② 시공간 스케치패드(Visuo-spatial Sketchpad): 시각 이미지와 공간 배치 정보를 처리한다. 길을 머릿속으로 그려가며 탐색하거나 체스판의 다음 수를 시각화하는 것이 여기 해당한다. ③ 중앙 집행기(Central Executive): 두 보조 시스템을 조율하고, 주의를 배분하며, 장기기억과의 정보 교환을 관리한다. ④ 삽화 완충기(Episodic Buffer, 2000년 추가): 음운 루프와 시공간 스케치패드의 정보를 통합하고 장기기억과 연결하는 임시 저장소다. 이중 과제 실험(예: 언어 과제와 공간 과제를 동시에 수행)이 이 모델의 핵심 증거다: 두 과제가 같은 보조 시스템을 사용하면 서로 방해하지만, 다른 시스템을 사용하면 간섭이 없다.</p>
+
+            <p><strong style="color:#1a1916">청각 지각: 소리를 '만드는' 뇌.</strong> 귀는 단순히 소리를 전달하고, 뇌는 그것을 수동적으로 받아들인다고 생각하기 쉽다. 그러나 청각 지각은 철저히 능동적이다. 뇌는 귀에서 오는 신호에 과거 경험, 맥락, 기대를 더해 소리를 해석한다. 바이노럴 처리(binaural processing)는 두 귀에 도달하는 소리의 미세한 시간 차와 강도 차를 계산해 소리의 3D 공간 위치를 추정한다. Virtual Barber Shop 음향은 헤드폰으로 이 원리를 극적으로 경험할 수 있게 한다. 또한 '칵테일 파티 효과'처럼, 시끄러운 환경에서도 특정 대화에만 집중할 수 있는 것은 청각과 주의 시스템이 긴밀하게 협력함을 보여준다.</p>
+
+            <p><strong style="color:#1a1916">시각 지각: 가정과 추론으로 보는 뇌.</strong> 망막은 2D 이미지를 받지만, 우리는 3D 세계를 경험한다. 이 변환 과정에서 뇌는 수많은 가정을 적용한다. 게슈탈트 법칙들(연속성, 근접성, 유사성, 폐쇄성)이 그 규칙이다. 루빈의 꽃병(배경과 얼굴이 번갈아 보이는 착시)이나 회전하는 발레리나 착시처럼, 물리적으로 동일한 자극에서 뇌가 서로 다른 해석을 선택하는 현상은 지각이 '보이는 것을 그대로 기록'하는 것이 아님을 보여준다. 또한 기억이 지각에 영향을 준다: 무엇을 기대하고 보느냐에 따라 실제 보이는 것이 달라진다.</p>
+
+            <p><strong style="color:#1a1916">교차감각 효과: 감각은 서로 침투한다.</strong> 인간의 감각 모달리티는 독립적으로 작동하지 않는다. McGurk 효과가 대표적이다: '바(ba)'라는 소리를 들으면서 '가(ga)'라고 발음하는 입 모양의 영상을 보면, 뇌는 '다(da)'라고 들린다고 지각한다. 시각 정보가 청각 지각을 덮어쓰는 것이다. 언어도 지각을 변화시킨다. Boroditsky의 연구처럼, 특정 색에 이름이 있는 언어를 쓰는 사람은 그 경계를 더 빨리 지각한다. 반대로 지각이 기억에도 영향을 준다. 동일한 장면을 보고도 '부딪혔다'와 '충돌했다'는 서로 다른 동사로 묘사하면 나중에 기억하는 속도 추정치가 달라진다(Loftus & Palmer의 고전 실험). 공감각(Synesthesia)은 이 교차 작동의 가장 극단적 형태다. 특정 소리가 색으로 보이거나, 숫자가 고유한 색을 갖거나, 맛이 형태로 느껴지는 등 감각 간 경계가 무너진 신경 현상으로 인구의 약 4%에게 나타난다. 신경과학적으로는 감각 처리 영역 간 교차 활성화(cross-activation)로 설명된다.</p>
+          </div>
+
+          <div class="section-label">🎬 영상 구성</div>
+          <ul class="item-list">
+            <li><span class="item-dot"></span>Welcome to Unit 4<span class="item-duration">1 min</span></li>
+            <li><span class="item-dot"></span>Working Memory — Baddeley 모델 3요소 및 증거<span class="item-duration">12 min</span></li>
+            <li><span class="item-dot"></span>Auditory Perception — 청각 처리 원리 및 교차감각<span class="item-duration">10 min</span></li>
+            <li><span class="item-dot"></span>Visual Perception — 시각 지각 및 착시 원리<span class="item-duration">9 min</span></li>
+          </ul>
+
+          <div class="section-label">🔗 보충 영상 자료</div>
+          <div class="link-list">
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/IUDTlvagjJA" target="_blank">Virtual Barber Shop (바이노럴 음향)</a>
+              <span class="link-item-desc">헤드폰으로 들으면 이발소 안에 있는 것 같은 3D 입체 음향 경험. 양귀 신호 처리로 공간 위치를 추론하는 청각 시스템을 직접 체험.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/ulflyGBhMus" target="_blank">How We Make Memories (뇌과학 영상)</a>
+              <span class="link-item-desc">해마(hippocampus)가 어떻게 단기기억을 장기기억으로 전환하는지 신경과학적 메커니즘 설명.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/G-lN8vWm3m0" target="_blank">Jamie Ward — The Curious World of Synaesthesia</a>
+              <span class="link-item-desc">공감각의 유형(소리→색, 숫자→색 등)과 신경학적 원인. 공감각자와 비공감각자의 뇌 활동 차이.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://www.newscientist.com/article/dn9969-spinning-dancer-optical-illusion-explained/" target="_blank">Spinning Ballerina Illusion</a>
+              <span class="link-item-desc">모호한 시각 자극에서 뇌가 하나의 해석을 선택하는 방식. 어느 방향으로 돌아 보이느냐가 뇌의 현재 처리 모드를 반영.</span>
+            </div>
+          </div>
+
+          <div class="section-label">🔑 핵심 개념</div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <div class="concept-name">작업기억 (Working Memory)</div>
+              <div class="concept-desc">Baddeley & Hitch. 음운 루프 + 시공간 스케치패드 + 중앙 집행기. 능동적 처리 시스템.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">음운 루프</div>
+              <div class="concept-desc">언어·숫자 정보를 내적 반복으로 유지. 용량 약 7±2 항목(Miller's Law).</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">교차감각 효과</div>
+              <div class="concept-desc">McGurk 효과: 시각이 청각 지각을 덮어씀. 감각 모달리티는 독립적이지 않다.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">공감각 (Synesthesia)</div>
+              <div class="concept-desc">하나의 감각 자극이 다른 감각 반응을 유발. 인구의 약 4%. 신경 연결의 교차로 설명.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MODULE 5 ── -->
+    <div class="module" id="mod5">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">05</div>
+        <div class="module-info">
+          <div class="module-tag">Module 5 &nbsp;·&nbsp; 1h</div>
+          <div class="module-title">주의·의식·자유의지</div>
+          <div class="module-desc">주의가 우리의 경험 전체를 어떻게 구성하는지, 의식과 자유의지가 신경과학적으로 어떻게 탐구되는지 다룬다.</div>
+          <div class="module-chips">
+            <span class="chip video">▶ 영상 3편 · 29 min</span>
+            <span class="chip read">📄 읽기 1편</span>
+            <span class="chip quiz">✎ 퀴즈</span>
+          </div>
+        </div>
+        <div class="module-time">1 h ▾</div>
+      </div>
+      <div class="module-body">
+        <div class="module-body-inner">
+
+          <div class="summary-block">
+            <p><strong style="color:#1a1916">주의(Attention)란 무엇인가 — William James의 정의.</strong> 19세기 심리학자 William James는 주의를 이렇게 정의했다: "여러 동시 다발적 대상이나 생각의 흐름 중 하나를 명료하고 생생한 형태로 마음속에 점유하는 것." 우리가 경험하는 세계는 감각 기관에 쏟아지는 정보의 극히 일부일 뿐이다. 주의는 그 선택의 메커니즘이다. 주의는 네 가지 형태로 분류된다: 선택적 주의(한 자극에 집중·다른 것 배제), 분할 주의(두 과제 동시 수행), 지속적 주의(sustained attention, 오랜 시간 집중 유지), 집행적 주의(executive attention, 충동 억제와 목표 지향). 칵테일 파티 효과는 선택적 주의가 자동적으로 작동함을 보여주는 일상적 증거다: 시끄러운 파티장에서도 어디선가 자기 이름이 들리면 즉시 알아챈다.</p>
+
+            <p><strong style="color:#1a1916">주의가 기억·언어·지각에 미치는 영향.</strong> 주의는 인지 전반의 '관문'이다. 주의가 향한 정보는 처리되고 기억에 부호화되지만, 주의에서 벗어난 정보는 물리적으로 눈앞에 있어도 기억에 남지 않는다. 언어 처리도 마찬가지로, 주의가 없는 상태에서는 단어의 의미 처리가 제대로 이루어지지 않는다. 지각에서도 주의는 처리 우선순위를 결정한다: 같은 시각 자극이라도 주의를 받은 것은 더 빠르고 정확하게 처리되며, 주의를 받지 못한 것은 있어도 없는 것처럼 경험된다.</p>
+
+            <p><strong style="color:#1a1916">주의 장애 사례: 시공간 무시 (Visual-Spatial Neglect).</strong> 신경심리학은 주의가 뇌의 독립적 시스템임을 병변 연구로 보여준다. 우측 두정엽(특히 하두정소엽)이 손상된 환자는 공간의 왼쪽 절반을 완전히 무시한다. 시력 자체는 정상이지만 접시 왼쪽의 음식만 남기고, 시계를 그릴 때 모든 숫자를 오른쪽에 몰아 넣으며, 자신의 왼쪽 팔다리를 씻거나 면도하는 것을 잊는다. 심지어 머릿속에서 이탈리아 광장을 상상하라고 했을 때도 왼쪽 건물들을 빠뜨린다. 이는 주의가 지각과 분리된 신경 시스템임을 보여주는 강력한 증거다. 치료에서는 환자의 오른쪽에서 자극을 주는 대신, 강제로 왼쪽으로 주의를 유도하는 '프리즘 적응 치료'가 활용된다.</p>
+
+            <p><strong style="color:#1a1916">변화 맹시와 부주의 맹시: 주의 없이는 보여도 안 보인다.</strong> 변화 맹시(Change Blindness)는 장면에 큰 변화가 일어나도 눈깜빡임·화면 전환·잠깐의 가림 등 작은 방해만 있으면 그 변화를 알아채지 못하는 현상이다. 실험에서 연구자가 행인에게 길을 안내하다가 잠깐 문짝이 가리는 사이 다른 사람으로 교체되어도 행인 절반이 알아채지 못했다. 부주의 맹시(Inattentional Blindness)는 한 과제에 집중하는 동안 예상치 못한 자극이 시야에 들어와도 의식하지 못하는 현상이다. Simons & Chabris의 '보이지 않는 고릴라' 실험(1999)에서 농구공 패스 횟수 세기에 집중한 피험자의 약 50%가 화면을 가로질러 걷는 고릴라 복장을 한 사람을 보지 못했다. 두 현상은 함께, 우리의 의식적 경험이 실제 감각 세계의 완전한 재현이 아니라 주의가 선택한 극히 일부임을 보여준다.</p>
+
+            <p><strong style="color:#1a1916">주의와 의식: 함께, 그러나 분리.</strong> 주의와 의식은 긴밀히 연결되지만 동일하지 않다. 의식적으로 주의를 기울이지 않아도 처리되는 정보(역하 자극, 자동적 처리)가 존재하며, 반대로 주의를 기울여야만 의식되는 정보도 있다. Global Workspace Theory(Baars, Dehaene)는 의식을 뇌 전역에 정보를 '방송'하는 네트워크로 설명한다. 주의는 그 방송이 시작되게 하는 스위치 역할을 하며, 주의를 받은 정보만이 전두-두정 네트워크를 통해 '전 뇌적 접근(global access)'을 얻어 의식적 경험이 된다. 이 이론은 fMRI·EEG 연구로 부분적으로 지지된다.</p>
+
+            <p><strong style="color:#1a1916">의식과 자유의지: Libet 실험의 충격.</strong> 신경과학자 Benjamin Libet(1983)은 피험자에게 원할 때 손목을 구부리게 하면서, 뇌파(EEG)와 자신이 움직이려는 의식적 의도를 느낀 시점을 동시에 기록했다. 결과는 충격적이었다: 뇌에서 '준비 전위(readiness potential)'가 나타난 것은 피험자가 의도를 보고한 시점보다 평균 약 300~500ms 앞섰다. 즉 뇌가 먼저 움직임을 준비하고, 우리는 그것을 나중에 '내가 결정했다'고 의식한다. 이는 의식적 자유의지가 행동의 원인이 아니라 이미 시작된 무의식적 과정을 사후에 인식한 것일 수 있음을 시사한다. 단, 이 실험의 해석은 여전히 논쟁 중이다. Libet 자신은 '거부권(veto power)'을 제안했다: 의도를 의식하고 나서 행동이 실행되기 전까지 약 150ms의 창(window)에서 의식이 행동을 취소할 수 있다는 것이다. 그러나 이 거부권 자체도 무의식적으로 결정된다는 반론이 있다.</p>
+          </div>
+
+          <div class="section-label">🎬 영상 구성</div>
+          <ul class="item-list">
+            <li><span class="item-dot"></span>Welcome to Unit 5<span class="item-duration">2 min</span></li>
+            <li><span class="item-dot"></span>Attention — 선택적 주의, 주의와 기억·지각의 관계, 시공간 무시<span class="item-duration">15 min</span></li>
+            <li><span class="item-dot"></span>Attention and Consciousness — 변화 맹시, 의식, 자유의지<span class="item-duration">13 min</span></li>
+          </ul>
+
+          <div class="section-label">🔗 보충 영상 자료</div>
+          <div class="link-list">
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/vJG698U2Mvo" target="_blank">Selective Attention Test — Invisible Gorilla</a>
+              <span class="link-item-desc">농구공 패스 횟수를 세는 도중 고릴라를 놓치는 고전 실험. 주의가 없으면 눈 앞의 것도 의식되지 않음을 직접 경험.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/FWSxSQsspiQ" target="_blank">Why You Miss Big Changes Right Before Your Eyes</a>
+              <span class="link-item-desc">변화 맹시 현상 설명. 장면 전환이나 잠깐의 시각 방해만 있어도 큰 변화를 알아채지 못하는 이유.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/hBSbSxNPbvE" target="_blank">Optical Illusion: The Motion After-Effect</a>
+              <span class="link-item-desc">폭포 착시(waterfall illusion). 움직임을 오래 보다가 정지한 화면을 보면 반대 방향으로 움직여 보이는 지각 적응 효과.</span>
+            </div>
+            <div class="link-item">
+              <a class="ext-link" href="https://youtu.be/v3iPrBrGSJM" target="_blank">Experiments in Change Blindness</a>
+              <span class="link-item-desc">실생활에서의 변화 맹시 실험 모음. 대화 중 상대가 바뀌어도 알아채지 못하는 극단적 사례 포함.</span>
+            </div>
+          </div>
+
+          <div class="section-label">🔑 핵심 개념</div>
+          <div class="concept-grid">
+            <div class="concept-card">
+              <div class="concept-name">선택적 주의</div>
+              <div class="concept-desc">무한한 감각 입력 중 일부만 처리. 칵테일 파티 효과. 주의가 경험을 구성.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">시공간 무시</div>
+              <div class="concept-desc">우측 두정엽 손상 → 좌측 공간 무시. 시력과 독립된 주의 시스템의 증거.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">변화 맹시 / 부주의 맹시</div>
+              <div class="concept-desc">주의 없이는 큰 변화도 의식되지 않음. 불보이는 고릴라 실험이 대표.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">Libet 실험과 자유의지</div>
+              <div class="concept-desc">준비 전위가 의식적 결정보다 수백ms 선행. 의식적 의지의 인과적 역할에 의문.</div>
+            </div>
+            <div class="concept-card">
+              <div class="concept-name">Global Workspace Theory</div>
+              <div class="concept-desc">의식 = 뇌 전역 정보 방송 시스템. 주의가 방송 스위치. Dehaene·Baars 제안.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  <span class="footer-note">© University of Cambridge · Coursera · 정리: jubo.kim</span>
+  <a class="footer-link" href="https://www.coursera.org/learn/introduction-to-cognitive-psychology-and-neuropsychology" target="_blank">→ 강의 바로가기</a>
+</div>
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    body.classList.toggle('open');
+    const t = header.querySelector('.module-time');
+    t.textContent = body.classList.contains('open')
+      ? t.textContent.replace('▾','▴')
+      : t.textContent.replace('▴','▾');
+  }
+
+  const mods = document.querySelectorAll('.module');
+  const navItems = document.querySelectorAll('.nav-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const match = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  mods.forEach(m => observer.observe(m));
+
+  document.querySelector('.module-header').click();
+</script>
+</body>
+</html>
