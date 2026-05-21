@@ -1,0 +1,491 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning and Memory in the Brain: A Guide for Teachers</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --surface: #eceae4;
+    --border: #c0bdb4;
+    --accent: #5a7d00;
+    --accent2: #006fa0;
+    --accent3: #b55200;
+    --text: #1a1916;
+    --text-dim: #3a3830;
+    --tag-bg: #e4e2db;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    min-height: 100vh;
+  }
+
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 64px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(90,125,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-meta::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 760px;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+
+  .header-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 29px; font-weight: 700;
+    color: var(--accent2);
+  }
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 200px);
+  }
+
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 40px 0;
+    position: sticky;
+    top: 0;
+    height: fit-content;
+  }
+  .nav-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-dim);
+    padding: 0 32px; margin-bottom: 16px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 32px; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border-left: 2px solid transparent;
+    text-decoration: none; color: var(--text-dim);
+  }
+  .nav-item:hover, .nav-item.active {
+    background: rgba(90,125,0,0.06);
+    color: var(--text); border-left-color: var(--accent);
+  }
+  .nav-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--accent); min-width: 24px;
+  }
+  .nav-title { font-size: 14px; line-height: 1.3; }
+
+  .content { padding: 48px 64px; }
+
+  .module {
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    animation: fadeUp 0.4s ease both;
+  }
+  .module:nth-child(1) { animation-delay: 0.05s; }
+  .module:nth-child(2) { animation-delay: 0.1s; }
+  .module:nth-child(3) { animation-delay: 0.15s; }
+  .module:nth-child(4) { animation-delay: 0.2s; }
+  .module:nth-child(5) { animation-delay: 0.25s; }
+  .module:nth-child(6) { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .module:hover { border-color: #b0ada4; }
+
+  .module-header {
+    display: flex; align-items: flex-start; gap: 24px;
+    padding: 28px 32px;
+    background: var(--surface);
+    cursor: pointer; user-select: none;
+  }
+  .module-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 49px; font-weight: 900; line-height: 1;
+    color: var(--border); min-width: 56px;
+    transition: color 0.2s;
+  }
+  .module:hover .module-number { color: #807d74; }
+  .module-info { flex: 1; }
+
+  .module-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px; font-weight: 700;
+    line-height: 1.3; margin-bottom: 10px;
+  }
+  .module-desc {
+    font-size: 14.5px; color: var(--text-dim); line-height: 1.7;
+  }
+
+  .module-chips {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;
+  }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em;
+    padding: 4px 10px;
+    background: var(--tag-bg); border: 1px solid var(--border);
+    color: var(--text-dim); border-radius: 2px;
+  }
+  .chip.video { border-color: #5a7d0025; color: var(--accent); }
+  .chip.read  { border-color: #006fa025; color: var(--accent2); }
+  .chip.quiz  { border-color: #b5520025; color: #a04400; }
+
+  .module-time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+    text-align: right; white-space: nowrap; padding-top: 4px;
+  }
+
+  .module-body {
+    border-top: 1px solid var(--border);
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .module-body.open { max-height: 5000px; }
+  .module-body-inner { padding: 28px 32px 36px; }
+
+  .summary-block {
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: #eeecea;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 2px 2px 0;
+  }
+  .summary-block p {
+    font-size: 15px; line-height: 1.85; color: #2a2820;
+    margin-bottom: 12px;
+  }
+  .summary-block p:last-child { margin-bottom: 0; }
+  .summary-block a, .concept-card a, .item-list a {
+    color: var(--accent2);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0,111,160,0.28);
+  }
+  .summary-block a:hover, .concept-card a:hover, .item-list a:hover {
+    border-bottom-color: var(--accent2);
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; letter-spacing: 0.16em;
+    color: var(--accent3);
+    text-transform: uppercase;
+    margin: 30px 0 14px;
+  }
+  .item-list { list-style: none; border-top: 1px solid var(--border); }
+  .item-list li {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+    font-size: 14.5px; line-height: 1.5;
+  }
+  .item-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent); flex: 0 0 auto;
+  }
+  .item-dot.blue { background: var(--accent2); }
+  .item-dot.orange { background: var(--accent3); }
+  .item-duration {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .concept-card {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.22);
+    padding: 16px 18px;
+    border-radius: 2px;
+  }
+  .concept-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .concept-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 64px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .footer-link { color: var(--accent2); text-decoration: none; }
+  .footer-link:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .header, .content { padding-left: 24px; padding-right: 24px; }
+    .main { grid-template-columns: 1fr; }
+    .sidebar { position: relative; border-right: 0; border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .nav-item { padding: 10px 24px; }
+    .module-header { padding: 24px 20px; gap: 16px; }
+    .module-number { font-size: 40px; min-width: 44px; }
+    .module-time { display: none; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .item-list li { align-items: flex-start; }
+    .item-duration { white-space: normal; text-align: right; }
+    .footer { padding: 22px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-meta">University of Cambridge · Coursera · Course Notes</div>
+  <h1><em>Learning and Memory</em> in the Brain: A Guide for Teachers</h1>
+  <div class="header-stats">
+    <div class="stat"><span class="stat-val">6</span><span class="stat-label">Modules</span></div>
+    <div class="stat"><span class="stat-val">2주</span><span class="stat-label">10 h / week</span></div>
+    <div class="stat"><span class="stat-val">4.8</span><span class="stat-label">평점 (31 reviews)</span></div>
+    <div class="stat"><span class="stat-val">5</span><span class="stat-label">Assignments</span></div>
+  </div>
+</div>
+
+<div class="main">
+  <nav class="sidebar">
+    <div class="nav-label">모듈 목차</div>
+    <a class="nav-item" href="#mod1"><span class="nav-num">01</span><span class="nav-title">Welcome</span></a>
+    <a class="nav-item" href="#mod2"><span class="nav-num">02</span><span class="nav-title">뇌에서의 학습</span></a>
+    <a class="nav-item" href="#mod3"><span class="nav-num">03</span><span class="nav-title">기억의 유형</span></a>
+    <a class="nav-item" href="#mod4"><span class="nav-num">04</span><span class="nav-title">연령별 뇌 변화</span></a>
+    <a class="nav-item" href="#mod5"><span class="nav-num">05</span><span class="nav-title">신경다양성</span></a>
+    <a class="nav-item" href="#mod6"><span class="nav-num">06</span><span class="nav-title">근거 기반 교수법</span></a>
+  </nav>
+
+  <div class="content">
+
+    <div class="module" id="mod1">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">01</div>
+        <div class="module-info">
+          <div class="module-tag">Module 1 &nbsp;·&nbsp; 1h</div>
+          <div class="module-title">Welcome to the Course</div>
+          <div class="module-desc">강의의 목적, 전체 흐름, 교실 적용 관점을 소개한다. 교사는 뇌과학을 “학생을 분류하는 언어”가 아니라 “학습 조건을 설계하는 도구”로 배운다.</div>
+          <div class="module-chips"><span class="chip video">▶ 영상 1편 · 4 min</span><span class="chip read">📄 읽기 1편</span><span class="chip quiz">💬 토론</span></div>
+        </div>
+        <div class="module-time">1 h ▾</div>
+      </div>
+      <div class="module-body"><div class="module-body-inner">
+        <div class="summary-block">
+          <p><strong style="color:#1a1916">강의의 큰 질문.</strong> <a href="https://www.coursera.org/learn/learning-and-memory-in-the-brain-a-guide-for-teachers" target="_blank" rel="noopener">이 강의</a>는 “학생은 어떻게 배운 것을 오래 기억하는가?”라는 교육 현장의 질문을 뇌와 심리학 연구로 풀어 간다. 새로운 정보가 신경세포 수준에서 어떻게 변화로 남고, 어떤 조건에서 그 변화가 오래 유지되는지를 교사 관점으로 정리한다.</p>
+          <p><strong style="color:#1a1916">교사를 위한 뇌과학.</strong> 강의는 신경과학 용어를 깊게 외우게 하기보다, 수업 설계에 바로 연결되는 원리를 강조한다. 기억은 한 번 설명했다고 자동으로 저장되는 것이 아니며, 주의·의미화·반복·인출·정서 상태가 함께 작동해야 안정적인 장기기억으로 굳어진다. 즉 “잘 설명했는가”보다 “학생이 처리하고, 연결하고, 다시 꺼내 보았는가”가 더 중요한 기준이 된다.</p>
+          <p><strong style="color:#1a1916">전체 구성.</strong> 학습과 기억의 세포 수준 기초에서 시작해, 기억의 종류, 아동·청소년·성인의 뇌 변화, 신경다양성, 마지막으로 근거 기반 교수법까지 이어진다. 각 모듈은 “개념 이해 → 교실 적용”의 흐름을 만든다. 이 문서는 강의 내용을 복습할 때 바로 찾아볼 수 있도록 핵심 개념마다 관련 자료 링크를 연결해 두었다.</p>
+        </div>
+        <div class="section-label">🎬 영상</div>
+        <ul class="item-list"><li><span class="item-dot"></span>Course introduction — 강의 목표와 수강 방식 안내<span class="item-duration">4 min</span></li></ul>
+        <div class="section-label">📄 읽기 / 토론</div>
+        <ul class="item-list"><li><span class="item-dot blue"></span>Course outline — 6개 모듈의 주제와 평가 방식 확인<span class="item-duration">30 min</span></li><li><span class="item-dot orange"></span>Introductions — 수강 동기와 교육 현장 관심사 공유<span class="item-duration">10 min</span></li></ul>
+      </div></div>
+    </div>
+
+    <div class="module" id="mod2">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">02</div>
+        <div class="module-info">
+          <div class="module-tag">Module 2 &nbsp;·&nbsp; 5h</div>
+          <div class="module-title">Learning in the Brain — 기억은 어떻게 뇌에 새겨지는가</div>
+          <div class="module-desc">학습이 일어날 때 신경세포와 시냅스가 어떻게 변하는지, 그리고 기억이 왜 재구성적이고 때로는 오류를 포함하는지 살핀다.</div>
+          <div class="module-chips"><span class="chip video">▶ 영상 4편 · 30 min</span><span class="chip read">📄 읽기 2편</span><span class="chip quiz">✎ 과제 1개</span></div>
+        </div>
+        <div class="module-time">5 h ▾</div>
+      </div>
+      <div class="module-body"><div class="module-body-inner">
+        <div class="summary-block">
+          <p><strong style="color:#1a1916">학습의 최소 단위: 시냅스 변화.</strong> 뇌는 고정된 저장 장치가 아니라 경험에 따라 연결 강도를 바꾸는 네트워크다. 어떤 개념을 반복해서 처리하면 관련 뉴런들이 함께 활성화되고, 그 연결은 더 효율적으로 변한다. 이 생각은 흔히 <a href="https://www.ncbi.nlm.nih.gov/books/NBK10878/" target="_blank" rel="noopener">Hebb의 원리와 시냅스 가소성</a>으로 설명된다. 교실에서 같은 내용을 “듣기만” 반복하는 것보다, 문제를 풀고 말로 설명하고 예시를 바꾸어 적용하는 활동이 중요한 이유가 여기에 있다.</p>
+          <p><strong style="color:#1a1916">장기강화와 기억 흔적.</strong> <a href="https://www.ncbi.nlm.nih.gov/books/NBK10878/" target="_blank" rel="noopener">장기강화(long-term potentiation, LTP)</a>는 특정 시냅스가 반복 활성화된 뒤 더 강한 반응을 보이는 현상이다. LTP는 “기억이 저장된다”는 말을 세포 수준에서 이해하게 해 주는 대표적 모델이다. 다만 LTP가 곧바로 교실 학습 전체를 설명하는 것은 아니므로, 수업 설계에서는 생물학적 원리와 실제 행동 증거를 함께 보아야 한다.</p>
+          <p><strong style="color:#1a1916">교실 적용: 반복보다 회로를 다시 켜는 경험.</strong> 학생이 설명을 들은 직후에는 이해한 것처럼 느껴도, 그 정보가 장기기억으로 안정화되려면 시간이 필요하다. 짧은 확인 질문, 다음 시간의 누적 퀴즈, 서로 다른 맥락에서 같은 개념을 다시 쓰게 하는 활동은 관련 회로를 반복적으로 재활성화한다. 이 과정에서 “조금 힘들게 떠올리는 경험”이 단순 재독보다 더 강한 학습 신호가 된다.</p>
+          <p><strong style="color:#1a1916">기억은 기록이 아니라 재구성이다.</strong> 기억은 카메라처럼 과거를 그대로 저장하지 않는다. 떠올릴 때마다 현재의 지식, 기대, 정서, 맥락이 섞여 다시 구성된다. 그래서 학습자는 배운 내용을 자신의 <a href="https://psychclassics.yorku.ca/Bartlett/" target="_blank" rel="noopener">도식(schema)</a>에 맞게 변형해 기억할 수 있다. 교사는 새 개념을 설명하기 전에 학생이 이미 가진 선개념을 확인해야 한다.</p>
+          <p><strong style="color:#1a1916">거짓 기억의 교육적 의미.</strong> 학생이 틀린 답을 말한다고 해서 항상 “공부하지 않았다”는 뜻은 아니다. 부분적으로 맞는 지식, 선개념, 비슷한 단어, 수업 맥락이 결합되어 그럴듯하지만 부정확한 기억이 만들어질 수 있다. <a href="https://journals.sagepub.com/doi/full/10.1177/0081246313484236" target="_blank" rel="noopener">거짓 기억 연구</a>는 질문 방식과 사후 정보가 기억을 바꿀 수 있음을 보여준다. 따라서 피드백은 “정답만 알려주기”보다 학생이 어디서 잘못 연결했는지 드러내는 방식이어야 한다.</p>
+        </div>
+        <div class="section-label">🎬 영상 구성</div>
+        <ul class="item-list"><li><span class="item-dot"></span>Introduction: Learning in the brain<span class="item-duration">1 min</span></li><li><span class="item-dot"></span>Learning in the brain - 1 — 뉴런, 시냅스, 가소성 기초<span class="item-duration">10 min</span></li><li><span class="item-dot"></span>Learning in the brain - 2 — 장기기억 형성과 강화<span class="item-duration">8 min</span></li><li><span class="item-dot"></span>Learning in the brain - 3 — 재구성 기억과 거짓 기억<span class="item-duration">12 min</span></li></ul>
+        <div class="section-label">📄 읽기 / 과제</div>
+        <ul class="item-list"><li><span class="item-dot blue"></span>Task: Word list to learn — 단어 목록 학습 활동<span class="item-duration">30 min</span></li><li><span class="item-dot blue"></span>Further interest — 심화 읽기 자료<span class="item-duration">30 min</span></li><li><span class="item-dot orange"></span>Knowledge check: Learning in the brain<span class="item-duration">180 min</span></li></ul>
+        <div class="section-label">🔑 핵심 개념</div>
+        <div class="concept-grid"><div class="concept-card"><div class="concept-name"><a href="https://www.ncbi.nlm.nih.gov/books/NBK10878/" target="_blank" rel="noopener">시냅스 가소성</a></div><div class="concept-desc">경험에 따라 뉴런 사이 연결 강도가 바뀌는 성질. 학습과 기억 형성의 생물학적 기반.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.ncbi.nlm.nih.gov/books/NBK10878/" target="_blank" rel="noopener">장기강화 (LTP)</a></div><div class="concept-desc">반복 활성화된 시냅스가 이후 더 쉽게, 더 강하게 반응하는 현상.</div></div><div class="concept-card"><div class="concept-name"><a href="https://psychclassics.yorku.ca/Bartlett/" target="_blank" rel="noopener">재구성 기억</a></div><div class="concept-desc">기억은 저장된 원본을 꺼내는 것이 아니라, 단서와 현재 지식을 사용해 다시 구성하는 과정.</div></div><div class="concept-card"><div class="concept-name"><a href="https://journals.sagepub.com/doi/full/10.1177/0081246313484236" target="_blank" rel="noopener">거짓 기억</a></div><div class="concept-desc">실제로 경험하지 않은 내용도 단서, 기대, 도식 때문에 기억처럼 느껴질 수 있는 현상.</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="module" id="mod3">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">03</div>
+        <div class="module-info">
+          <div class="module-tag">Module 3 &nbsp;·&nbsp; 4h</div>
+          <div class="module-title">Types of Memory — 기억은 하나가 아니다</div>
+          <div class="module-desc">단기기억, 작업기억, 장기기억, 일화·의미·절차기억의 차이를 구분하고, 망각과 회상의 교육적 의미를 정리한다.</div>
+          <div class="module-chips"><span class="chip video">▶ 영상 4편 · 24 min</span><span class="chip read">📄 읽기 2편</span><span class="chip quiz">✎ 과제 + 플러그인</span></div>
+        </div>
+        <div class="module-time">4 h ▾</div>
+      </div>
+      <div class="module-body"><div class="module-body-inner">
+        <div class="summary-block">
+          <p><strong style="color:#1a1916">단기기억과 작업기억.</strong> 단기기억은 짧은 시간 동안 정보를 붙잡아 두는 저장 공간에 가깝고, <a href="https://www.nature.com/articles/nrn1201" target="_blank" rel="noopener">작업기억</a>은 그 정보를 조작하고 문제 해결에 사용하는 능동적 시스템이다. 학생이 긴 지시문을 놓치거나 복잡한 문제를 중간에 잃어버리는 이유는 지식 부족이 아니라 작업기억 부담 때문일 수 있다. 그래서 긴 설명은 작은 단계로 나누고, 판서·그림·예시처럼 외부 단서를 제공하는 편이 좋다.</p>
+          <p><strong style="color:#1a1916">작업기억 부담을 줄이는 수업 설계.</strong> 새 개념을 배울 때 학생은 “무엇을 해야 하는지”, “어떤 정보를 기억해야 하는지”, “어떤 규칙을 적용해야 하는지”를 동시에 처리한다. 이때 불필요한 장식, 긴 문장, 여러 과제를 한꺼번에 주는 방식은 학습 자체보다 처리 부담을 키운다. 교사는 핵심 절차를 보이게 만들고, 예시 문제에서 점차 도움을 줄이는 방식으로 학생의 인지 부담을 관리할 수 있다.</p>
+          <p><strong style="color:#1a1916">장기기억의 여러 얼굴.</strong> 장기기억은 일화기억, 의미기억, 절차기억으로 나뉜다. 역사적 사건의 날짜를 아는 것, 그 수업 장면을 기억하는 것, 현미경을 조작하는 법을 익히는 것은 서로 다른 기억 체계에 기대는 학습이다. 같은 “배웠다”라도 어떤 기억 체계를 목표로 하는지에 따라 수업 활동과 평가 방식이 달라져야 한다.</p>
+          <p><strong style="color:#1a1916">Bartlett과 이야기 기억.</strong> <a href="https://psychclassics.yorku.ca/Bartlett/" target="_blank" rel="noopener">Bartlett의 “The War of the Ghosts” 연구</a>는 사람들이 낯선 이야기를 자신의 문화적 도식에 맞게 바꾸어 기억한다는 점을 보여준다. 학생도 새로운 개념을 기존 지식 틀 안에 끼워 넣으며 이해한다. 그래서 오개념은 단순한 결핍이 아니라, 학생이 새 정보를 이해하려고 사용한 기존 틀의 흔적일 수 있다.</p>
+          <p><strong style="color:#1a1916">망각의 역할.</strong> 망각은 단순한 실패가 아니다. 덜 중요한 정보를 줄이고, 다시 떠올릴 필요를 만들며, 회상 연습의 효과를 높인다. “조금 잊은 뒤 다시 인출하기”는 기억을 더 튼튼하게 만든다. <a href="https://www.learningscientists.org/blog/2016/6/23-1" target="_blank" rel="noopener">인출 연습</a>은 쉬운 재독보다 더 어렵게 느껴지지만, 바로 그 어려움이 장기기억을 강화한다.</p>
+        </div>
+        <div class="section-label">🎬 영상 구성</div>
+        <ul class="item-list"><li><span class="item-dot"></span>Introduction: Types of memory<span class="item-duration">1 min</span></li><li><span class="item-dot"></span>Short term memory experiment — 단기기억 체험 실험<span class="item-duration">5 min</span></li><li><span class="item-dot"></span>Types of memory — 기억 체계의 구분<span class="item-duration">11 min</span></li><li><span class="item-dot"></span>Types of memory - Bartlett's The War of the Ghosts<span class="item-duration">7 min</span></li></ul>
+        <div class="section-label">📄 읽기 / 과제 / 플러그인</div>
+        <ul class="item-list"><li><span class="item-dot blue"></span>Forgetting — 망각과 기억 유지의 원리<span class="item-duration">30 min</span></li><li><span class="item-dot blue"></span>Further interest — 심화 읽기 자료<span class="item-duration">30 min</span></li><li><span class="item-dot orange"></span>Knowledge check: Types of memory<span class="item-duration">180 min</span></li><li><span class="item-dot orange"></span>The Woman Who Could Not Forget - Jill Price (YouTube Video)<span class="item-duration">0 min</span></li></ul>
+        <div class="section-label">🔑 핵심 개념</div>
+        <div class="concept-grid"><div class="concept-card"><div class="concept-name"><a href="https://www.nature.com/articles/nrn1201" target="_blank" rel="noopener">작업기억</a></div><div class="concept-desc">정보를 잠시 유지하면서 동시에 조작하는 시스템. 복잡한 문제풀이와 지시 이해에 중요.</div></div><div class="concept-card"><div class="concept-name">일화기억</div><div class="concept-desc">개인이 경험한 사건과 맥락에 대한 기억.</div></div><div class="concept-card"><div class="concept-name">의미기억</div><div class="concept-desc">개념, 단어 의미, 사실 지식. 학교 교과 학습의 많은 부분이 여기에 해당한다.</div></div><div class="concept-card"><div class="concept-name">절차기억</div><div class="concept-desc">자전거 타기, 악기 연주, 실험 도구 조작처럼 몸으로 익히는 기억.</div></div><div class="concept-card"><div class="concept-name"><a href="https://psychclassics.yorku.ca/Bartlett/" target="_blank" rel="noopener">도식 (Schema)</a></div><div class="concept-desc">새 정보를 해석하는 기존 지식 구조. 이해를 돕지만 낯선 내용을 왜곡할 수도 있다.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.learningscientists.org/blog/2016/6/23-1" target="_blank" rel="noopener">인출 연습</a></div><div class="concept-desc">정답을 다시 읽는 대신 스스로 떠올리는 연습.</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="module" id="mod4">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">04</div>
+        <div class="module-info">
+          <div class="module-tag">Module 4 &nbsp;·&nbsp; 4h</div>
+          <div class="module-title">Brain Changes Through the Ages — 발달 단계와 학습</div>
+          <div class="module-desc">출생부터 성인기까지 뇌가 어떻게 변하며, 각 발달 단계의 변화가 학습과 기억 방식에 어떤 차이를 만드는지 다룬다.</div>
+          <div class="module-chips"><span class="chip video">▶ 영상 3편 · 21 min</span><span class="chip read">📄 읽기 1편</span><span class="chip quiz">✎ 과제 1개</span></div>
+        </div>
+        <div class="module-time">4 h ▾</div>
+      </div>
+      <div class="module-body"><div class="module-body-inner">
+        <div class="summary-block"><p><strong style="color:#1a1916">발달은 “더 커짐”만이 아니다.</strong> 뇌 발달은 연결이 만들어지고, 자주 쓰는 연결은 강화되며, 덜 쓰는 연결은 정리되는 과정이다. <a href="https://my.clevelandclinic.org/health/articles/synaptic-pruning" target="_blank" rel="noopener">시냅스 가지치기</a>는 어린 시절과 청소년기의 학습 민감성을 이해하는 핵심 개념이다. 많이 쓰는 회로는 살아남고 덜 쓰는 회로는 약해진다는 점에서, 반복 경험과 환경의 질은 발달에 큰 영향을 준다.</p><p><strong style="color:#1a1916">어린 학습자의 강점과 한계.</strong> 어린이는 언어, 감각, 사회적 단서에 민감하게 반응하고 빠르게 패턴을 배운다. 하지만 작업기억, 주의 조절, 장기 계획 능력은 아직 발달 중이다. 그래서 낮은 연령의 학생에게는 긴 추상 설명보다 짧은 절차, 구체물, 반복되는 수업 루틴, 즉각적인 피드백이 더 안정적인 학습 조건을 만든다.</p><p><strong style="color:#1a1916">청소년기 뇌의 재편.</strong> <a href="https://www.nimh.nih.gov/health/publications/the-teen-brain-7-things-to-know" target="_blank" rel="noopener">청소년기 뇌</a>는 보상 민감성, 정서 반응, 사회적 평가에 대한 민감도가 커지는 시기다. 동시에 계획·억제·자기조절과 관련된 전전두엽 네트워크는 계속 성숙한다. 이 때문에 청소년 학습자는 단순 통제보다 선택권, 의미 있는 목표, 또래와의 건강한 상호작용을 통해 더 잘 참여할 수 있다.</p><p><strong style="color:#1a1916">성인기와 평생 학습.</strong> 성인의 뇌도 변화한다. 새로운 기술을 배우고, 연습하고, 환경을 바꾸면 연결은 계속 재조직된다. 다만 성인 학습자는 이미 형성된 지식 구조와 습관이 강하므로, 새 정보를 기존 경험과 연결하고 실제 문제에 적용하는 방식이 효과적이다.</p><p><strong style="color:#1a1916">교실에서의 결론.</strong> 발달 단계는 학생을 고정적으로 분류하는 기준이 아니라, 어떤 지원이 필요한지 판단하는 지도다. 같은 내용을 가르치더라도 어린 학생에게는 명시적 구조와 감각 단서가, 청소년에게는 자율성과 사회적 의미가, 성인에게는 경험 연결과 목적성이 더 중요해질 수 있다.</p></div>
+        <div class="section-label">🎬 영상 구성</div><ul class="item-list"><li><span class="item-dot"></span>Introduction: Brain changes through the ages<span class="item-duration">1 min</span></li><li><span class="item-dot"></span>Brain changes through the ages - 1 — 아동기 뇌 발달과 학습<span class="item-duration">10 min</span></li><li><span class="item-dot"></span>Brain changes through the ages - 2 — 청소년기·성인기 변화<span class="item-duration">10 min</span></li></ul>
+        <div class="section-label">📄 읽기 / 과제</div><ul class="item-list"><li><span class="item-dot blue"></span>Further interest — 발달과 학습에 관한 심화 자료<span class="item-duration">30 min</span></li><li><span class="item-dot orange"></span>Knowledge check: Brain changes through the ages<span class="item-duration">180 min</span></li></ul>
+        <div class="section-label">🔑 핵심 개념</div><div class="concept-grid"><div class="concept-card"><div class="concept-name"><a href="https://my.clevelandclinic.org/health/articles/synaptic-pruning" target="_blank" rel="noopener">시냅스 가지치기</a></div><div class="concept-desc">덜 사용되는 연결은 약해지고 자주 쓰는 연결은 강화되는 발달 과정.</div></div><div class="concept-card"><div class="concept-name">민감기</div><div class="concept-desc">특정 경험에 뇌가 특히 잘 반응하는 시기.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.nimh.nih.gov/health/publications/the-teen-brain-7-things-to-know" target="_blank" rel="noopener">전전두엽 발달</a></div><div class="concept-desc">계획, 억제, 주의 조절, 의사결정과 관련된 영역.</div></div><div class="concept-card"><div class="concept-name">발달 적합성</div><div class="concept-desc">학생의 발달 수준에 맞게 설명 길이, 활동 구조, 피드백 방식을 조절하는 원리.</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="module" id="mod5">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">05</div>
+        <div class="module-info"><div class="module-tag">Module 5 &nbsp;·&nbsp; 4h</div><div class="module-title">Neurodiversity — 교실 속 다양한 뇌</div><div class="module-desc">자폐 스펙트럼, ADHD, 난독증 등 학습 차이를 결핍 중심이 아니라 뇌의 다양성과 지원 필요성의 관점에서 이해한다.</div><div class="module-chips"><span class="chip video">▶ 영상 2편 · 24 min</span><span class="chip read">📄 읽기 1편</span><span class="chip quiz">✎ 과제 1개</span></div></div>
+        <div class="module-time">4 h ▾</div>
+      </div>
+      <div class="module-body"><div class="module-body-inner">
+        <div class="summary-block"><p><strong style="color:#1a1916">신경다양성의 관점.</strong> <a href="https://www.ncbi.nlm.nih.gov/books/NBK573531/" target="_blank" rel="noopener">신경다양성</a>은 모든 뇌가 같은 방식으로 배우고, 주의하고, 소통한다는 가정을 내려놓게 한다. 자폐, ADHD, 난독증 같은 차이는 단순히 “부족함”으로만 설명될 수 없다. 어떤 학생에게 어려움이 되는 특성이 다른 환경에서는 강점이 될 수 있기 때문에, 핵심 질문은 “학생이 왜 이렇지?”가 아니라 “이 학생이 배울 수 있게 환경을 어떻게 조정할까?”가 된다.</p><p><strong style="color:#1a1916">자폐 스펙트럼 이해.</strong> 자폐 스펙트럼 학생은 사회적 의사소통, 감각 처리, 예측 가능성, 관심사의 깊이에서 독특한 양상을 보일 수 있다. 명확한 구조, 시각적 안내, 감각 부담 조절, 예상 가능한 전환이 도움이 된다. 예를 들어 갑작스러운 활동 변경을 줄이고, 다음 활동을 미리 보여 주며, 말로만 설명하지 않고 그림·일정표·예시를 함께 제공하면 불필요한 불안을 낮출 수 있다.</p><p><strong style="color:#1a1916">ADHD와 주의 조절.</strong> ADHD는 단순히 의지가 약하거나 산만한 것이 아니라, 주의 전환, 억제, 보상 민감성, <a href="https://www.ncbi.nlm.nih.gov/books/NBK539712/" target="_blank" rel="noopener">실행 기능</a>과 관련된 차이로 이해된다. 긴 시간 조용히 앉아 있기보다 짧은 활동 단위, 눈에 보이는 목표, 즉각적인 피드백, 움직임을 포함한 학습이 도움이 될 수 있다. 과제 지시는 “나중에 제출해”보다 “지금 1단계 표시, 2단계 풀이, 3단계 제출”처럼 작게 쪼개는 편이 좋다.</p><p><strong style="color:#1a1916">난독증과 읽기 지원.</strong> 난독증은 지능의 문제가 아니라 문자-소리 대응, 음운 처리, 읽기 자동화에서 나타나는 차이다. 다감각 접근, 명시적 음운 지도, 충분한 시간, 읽기와 지식 평가를 분리하는 방식이 필요하다. 교사는 “천천히 읽는 학생”을 “천천히 생각하는 학생”으로 오해하지 않아야 한다.</p><p><strong style="color:#1a1916">지원은 특혜가 아니라 접근성이다.</strong> <a href="https://udlguidelines.cast.org/" target="_blank" rel="noopener">보편적 학습 설계(UDL)</a>는 처음부터 여러 방식의 참여, 표현, 평가 경로를 제공하자는 접근이다. 한 학생을 위해 만든 시각 자료, 체크리스트, 선택형 과제는 대개 다른 학생에게도 도움이 된다. 신경다양성을 고려한 수업은 특정 학생만을 위한 별도 장치가 아니라, 전체 학습 환경의 품질을 높이는 설계다.</p></div>
+        <div class="section-label">🎬 영상 구성</div><ul class="item-list"><li><span class="item-dot"></span>Introduction: Neurodiversity<span class="item-duration">1 min</span></li><li><span class="item-dot"></span>Neurodiversity — ASD, ADHD, Dyslexia와 교실 지원<span class="item-duration">23 min</span></li></ul>
+        <div class="section-label">📄 읽기 / 과제</div><ul class="item-list"><li><span class="item-dot blue"></span>Further interest — 신경다양성 관련 심화 자료<span class="item-duration">30 min</span></li><li><span class="item-dot orange"></span>Knowledge check: Neurodiversity<span class="item-duration">180 min</span></li></ul>
+        <div class="section-label">🔑 핵심 개념</div><div class="concept-grid"><div class="concept-card"><div class="concept-name"><a href="https://www.ncbi.nlm.nih.gov/books/NBK573531/" target="_blank" rel="noopener">신경다양성</a></div><div class="concept-desc">뇌와 인지 방식의 차이를 인간 다양성의 일부로 보는 관점.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.ncbi.nlm.nih.gov/books/NBK539712/" target="_blank" rel="noopener">실행 기능</a></div><div class="concept-desc">계획, 억제, 과제 전환, 목표 유지 능력.</div></div><div class="concept-card"><div class="concept-name">감각 처리</div><div class="concept-desc">소리, 빛, 촉감 같은 자극에 대한 민감도 차이.</div></div><div class="concept-card"><div class="concept-name"><a href="https://udlguidelines.cast.org/" target="_blank" rel="noopener">보편적 학습 설계</a></div><div class="concept-desc">다양한 학생이 접근할 수 있도록 표현, 참여, 평가 방식을 여러 경로로 제공하는 원리.</div></div></div>
+      </div></div>
+    </div>
+
+    <div class="module" id="mod6">
+      <div class="module-header" onclick="toggle(this)">
+        <div class="module-number">06</div>
+        <div class="module-info"><div class="module-tag">Module 6 &nbsp;·&nbsp; 4h</div><div class="module-title">Evidence Based Teaching — 오래 남는 학습을 설계하는 법</div><div class="module-desc">실험실 연구를 교실에 적용할 때의 주의점과, 과학적으로 지지되는 학습 전략을 검토한다.</div><div class="module-chips"><span class="chip video">▶ 영상 4편 · 29 min</span><span class="chip read">📄 읽기 1편</span><span class="chip quiz">✎ 과제 + 토론</span></div></div>
+        <div class="module-time">4 h ▾</div>
+      </div>
+      <div class="module-body"><div class="module-body-inner">
+        <div class="summary-block"><p><strong style="color:#1a1916">실험실에서 교실로 옮길 때의 주의.</strong> 뇌과학 연구는 강력한 통찰을 주지만, 실험실 결과를 그대로 교실 처방으로 바꾸면 위험하다. 다양한 학생, 긴 학기, 복잡한 교실 상황에서도 같은 방식으로 작동하는지 따져야 한다. 좋은 근거 기반 교수법은 “논문에 있었다”에서 끝나지 않고, 효과 크기·반복 연구·학생 특성·실행 가능성을 함께 본다.</p><p><strong style="color:#1a1916">가장 강한 전략: 인출과 간격.</strong> 오래 남는 학습에는 재독보다 <a href="https://www.learningscientists.org/blog/2016/6/23-1" target="_blank" rel="noopener">인출 연습</a>이 중요하다. 학생이 답을 보지 않고 떠올릴 때 기억 흔적은 더 강해진다. 또한 한 번에 몰아서 배우는 것보다 시간을 두고 반복하는 <a href="https://www.learningscientists.org/blog/2016/7/21-1" target="_blank" rel="noopener">간격 학습</a>이 장기 유지에 유리하다. 짧은 누적 퀴즈, 지난 단원 한 문제, 수업 시작 3분 회상 활동은 간단하지만 강력한 장치다.</p><p><strong style="color:#1a1916">교차 연습과 정교화.</strong> 서로 다른 유형을 섞는 <a href="https://www.learningscientists.org/blog/2016/8/11-1" target="_blank" rel="noopener">교차 연습</a>은 처음에는 어렵지만, 어떤 전략을 언제 써야 하는지 배우게 한다. <a href="https://www.learningscientists.org/blog/2016/7/7-1" target="_blank" rel="noopener">정교화</a>는 새 지식을 이유, 예시, 비교, 기존 지식과 연결해 의미망 안에 넣는 과정이다. “왜 그런가?”, “무엇과 비슷하고 다른가?”, “새 예시는 무엇인가?” 같은 질문은 단순 암기를 이해로 바꾼다.</p><p><strong style="color:#1a1916">피드백과 오류의 역할.</strong> 효과적인 피드백은 단순히 정답 여부를 알려주는 것이 아니라, 학생의 생각이 어디서 갈라졌는지 보여준다. 특히 기억은 재구성적이므로, 잘못된 연결을 오래 방치하면 그 자체가 안정적인 기억처럼 굳어질 수 있다. 낮은 부담의 자주 하는 확인, 즉시 수정, 학생이 자기 말로 다시 설명하는 과정이 중요하다.</p><p><strong style="color:#1a1916">Mind palace와 기억 전략.</strong> <a href="https://www.sciencedirect.com/topics/psychology/method-of-loci" target="_blank" rel="noopener">기억 궁전(method of loci)</a>은 익숙한 공간의 위치에 정보를 배치해 회상 단서를 만드는 전략이다. 깊은 이해를 대신하지는 않지만, 순서 있는 정보나 목록을 떠올리는 데 유용하다. 수업에서는 정의를 외우기 위한 보조 전략으로 쓰되, 이후 예시 적용·비교·설명 활동으로 이해를 반드시 확장해야 한다.</p><p><strong style="color:#1a1916">교사의 실천 원칙.</strong> 좋은 수업은 학생이 “알 것 같은 느낌”을 갖게 하는 수업이 아니라, 며칠 뒤에도 꺼내 쓸 수 있게 하는 수업이다. 따라서 설명 후 바로 이해 확인, 다음 수업의 짧은 인출, 단원 간 누적 복습, 예시와 비예시 비교, 자기 설명 활동을 수업 루틴으로 넣는 것이 핵심이다.</p></div>
+        <div class="section-label">🎬 영상 구성</div><ul class="item-list"><li><span class="item-dot"></span>Introduction: Evidence based teaching<span class="item-duration">1 min</span></li><li><span class="item-dot"></span>Evidence in the classroom - 1 — 연구 근거 해석과 적용<span class="item-duration">10 min</span></li><li><span class="item-dot"></span>Evidence in the classroom - 2 — 효과적인 학습 전략<span class="item-duration">14 min</span></li><li><span class="item-dot"></span>Mind palace — 장소법 기억 전략<span class="item-duration">4 min</span></li></ul>
+        <div class="section-label">📄 읽기 / 과제 / 토론</div><ul class="item-list"><li><span class="item-dot blue"></span>Further interest — 근거 기반 교수법 심화 자료<span class="item-duration">30 min</span></li><li><span class="item-dot orange"></span>Knowledge check: Evidence based teaching<span class="item-duration">180 min</span></li><li><span class="item-dot orange"></span>Feedback and reflections — 강의 적용 계획 공유<span class="item-duration">10 min</span></li></ul>
+        <div class="section-label">🔑 핵심 개념</div><div class="concept-grid"><div class="concept-card"><div class="concept-name"><a href="https://www.learningscientists.org/blog/2016/6/23-1" target="_blank" rel="noopener">인출 연습</a></div><div class="concept-desc">정답을 다시 보는 대신 기억에서 꺼내는 연습.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.learningscientists.org/blog/2016/7/21-1" target="_blank" rel="noopener">간격 효과</a></div><div class="concept-desc">학습을 시간 간격을 두고 반복할 때 장기 유지가 좋아지는 현상.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.learningscientists.org/blog/2016/8/11-1" target="_blank" rel="noopener">교차 연습</a></div><div class="concept-desc">여러 문제 유형을 섞어 연습해 구분 능력과 전이 능력을 높이는 방식.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.learningscientists.org/blog/2016/7/7-1" target="_blank" rel="noopener">정교화</a></div><div class="concept-desc">새 정보를 이유, 예시, 비교, 기존 지식과 연결하는 전략.</div></div><div class="concept-card"><div class="concept-name"><a href="https://www.sciencedirect.com/topics/psychology/method-of-loci" target="_blank" rel="noopener">기억 궁전</a></div><div class="concept-desc">익숙한 공간 위치를 회상 단서로 사용하는 장소법.</div></div><div class="concept-card"><div class="concept-name">근거 기반 교수법</div><div class="concept-desc">직관이나 유행이 아니라 반복 연구와 적용 가능성을 함께 따져 전략을 선택하는 태도.</div></div></div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  <span class="footer-note">© University of Cambridge · Coursera · 정리: jubo.kim</span>
+  <a class="footer-link" href="https://www.coursera.org/learn/learning-and-memory-in-the-brain-a-guide-for-teachers" target="_blank">→ 강의 바로가기</a>
+</div>
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    body.classList.toggle('open');
+    const t = header.querySelector('.module-time');
+    t.textContent = body.classList.contains('open') ? t.textContent.replace('▾','▴') : t.textContent.replace('▴','▾');
+  }
+
+  const mods = document.querySelectorAll('.module');
+  const navItems = document.querySelectorAll('.nav-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const match = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  mods.forEach(m => observer.observe(m));
+
+  document.querySelector('.module-header').click();
+</script>
+</body>
+</html>
