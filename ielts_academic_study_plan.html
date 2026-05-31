@@ -432,31 +432,70 @@ const PHASES = [
 const TAG_LABELS = { 'tag-l': 'L', 'tag-r': 'R', 'tag-w': 'W', 'tag-s': 'S', 'tag-v': 'V' };
 const TAG_NAMES = { 'tag-l': 'Listening', 'tag-r': 'Reading', 'tag-w': 'Writing', 'tag-s': 'Speaking', 'tag-v': 'Vocabulary' };
 const SKILLS = ['전체', 'Listening', 'Reading', 'Writing', 'Speaking', 'Vocabulary'];
-const STORAGE_KEY = 'ielts_academic_checked';
 
-let checked = {};
+/* --- URL hash 기반 저장 ---
+   전체 30개 항목(Phase 0~2, 각 10개)을 비트 배열로 관리.
+   globalIndex(pi, i) = pi*10 + i  →  0~29번 비트
+   비트열을 5자리 base64url 문자로 인코딩해 location.hash에 저장.
+   북마크/공유만 해도 진도가 유지됨. 서버·쿠키·localStorage 불필요. */
+
+const ITEMS_PER_PHASE = 10;
+const TOTAL_ITEMS = PHASES.reduce((a, ph) => a + ph.items.length, 0);
+
+function globalIndex(pi, i) { return pi * ITEMS_PER_PHASE + i; }
+
+/* 비트 배열 → base64url 문자열 */
+function bitsToHash(bits) {
+  let n = BigInt(0);
+  bits.forEach((b, idx) => { if (b) n |= (BigInt(1) << BigInt(idx)); });
+  let hex = n.toString(16);
+  if (hex === '0') return '0';
+  return hex;
+}
+
+/* base64url 문자열 → 비트 배열 */
+function hashToBits(str) {
+  const bits = new Array(TOTAL_ITEMS).fill(false);
+  if (!str || str === '0') return bits;
+  try {
+    const n = BigInt('0x' + str);
+    for (let idx = 0; idx < TOTAL_ITEMS; idx++) {
+      bits[idx] = !!(n & (BigInt(1) << BigInt(idx)));
+    }
+  } catch(e) {}
+  return bits;
+}
+
+let checkedBits = new Array(TOTAL_ITEMS).fill(false);
 let currentPhase = 0;
 let currentSkill = '전체';
 
 function loadChecked() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) checked = JSON.parse(raw);
-  } catch(e) {}
+  const hash = location.hash.replace('#', '');
+  checkedBits = hashToBits(hash);
 }
+
 function saveChecked() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(checked)); } catch(e) {}
+  const tag = bitsToHash(checkedBits);
+  history.replaceState(null, '', '#' + tag);
+}
+
+function isChecked(pi, i) { return checkedBits[globalIndex(pi, i)]; }
+function toggleChecked(pi, i) {
+  const g = globalIndex(pi, i);
+  checkedBits[g] = !checkedBits[g];
+  saveChecked();
 }
 
 function key(pi, i) { return 'p' + pi + '_' + i; }
 
 function updateStats() {
   const total = PHASES.reduce((a, ph) => a + ph.items.length, 0);
-  const done = PHASES.reduce((a, ph, pi) => a + ph.items.filter((_, i) => checked[key(pi, i)]).length, 0);
+  const done = PHASES.reduce((a, ph, pi) => a + ph.items.filter((_, i) => isChecked(pi, i)).length, 0);
   document.getElementById('totalDone').textContent = done;
   document.getElementById('totalItems').textContent = total;
   PHASES.forEach((ph, pi) => {
-    const d = ph.items.filter((_, i) => checked[key(pi, i)]).length;
+    const d = ph.items.filter((_, i) => isChecked(pi, i)).length;
     const pct = Math.round(d / ph.items.length * 100);
     document.getElementById('pf' + pi).style.width = pct + '%';
     document.getElementById('pp' + pi).textContent = pct + '%';
@@ -481,8 +520,7 @@ function renderChecklist() {
   el.innerHTML = '';
   ph.items.forEach((item, i) => {
     if (currentSkill !== '전체' && TAG_NAMES[item.tag] !== currentSkill) return;
-    const k = key(currentPhase, i);
-    const done = !!checked[k];
+    const done = isChecked(currentPhase, i);
     const div = document.createElement('div');
     div.className = 'check-item' + (done ? ' done' : '');
     div.innerHTML =
@@ -495,8 +533,7 @@ function renderChecklist() {
         '</span>' +
       '</div>';
     div.onclick = () => {
-      checked[k] = !checked[k];
-      saveChecked();
+      toggleChecked(currentPhase, i);
       renderChecklist();
       updateStats();
     };
@@ -525,4 +562,3 @@ updateStats();
 </script>
 </body>
 </html>
- 
