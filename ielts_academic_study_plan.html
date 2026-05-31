@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Academic 6개월 학습 계획</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F2EC;
+    --bg-card: #FDFAF5;
+    --bg-card2: #F0EDE6;
+    --ink: #1A1814;
+    --ink-2: #6B6760;
+    --ink-3: #A09C97;
+    --accent: #2D5A3D;
+    --accent-light: #E8F0EA;
+    --accent-2: #4A3F8C;
+    --accent-2-light: #ECEAFC;
+    --accent-3: #8C3A20;
+    --accent-3-light: #F5E8E3;
+    --border: rgba(26,24,20,0.1);
+    --border-2: rgba(26,24,20,0.06);
+    --tag-l-bg: #E8F4EE; --tag-l: #1A5C38;
+    --tag-r-bg: #E6EFF8; --tag-r: #1A3F6B;
+    --tag-w-bg: #FBF1E3; --tag-w: #7A4A10;
+    --tag-s-bg: #F9E8EF; --tag-s: #7A1F45;
+    --tag-v-bg: #ECEAFC; --tag-v: #3A2F85;
+    --shadow: 0 2px 12px rgba(26,24,20,0.06);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141210;
+      --bg-card: #1E1B17;
+      --bg-card2: #252119;
+      --ink: #F0EDE6;
+      --ink-2: #9A968F;
+      --ink-3: #615D57;
+      --accent: #5A9E6A;
+      --accent-light: #1A2E1F;
+      --accent-2: #8B7FD4;
+      --accent-2-light: #1E1A38;
+      --accent-3: #D4724A;
+      --accent-3-light: #2A1810;
+      --border: rgba(240,237,230,0.1);
+      --border-2: rgba(240,237,230,0.05);
+      --tag-l-bg: #0E2018; --tag-l: #7ECFA0;
+      --tag-r-bg: #0E1A2A; --tag-r: #7AB2E0;
+      --tag-w-bg: #2A1A08; --tag-w: #E0B070;
+      --tag-s-bg: #2A0E18; --tag-s: #E07AA0;
+      --tag-v-bg: #1A1838; --tag-v: #A097E8;
+      --shadow: 0 2px 16px rgba(0,0,0,0.3);
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* Header */
+  .header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: 'IELTS';
+    position: absolute;
+    right: -1rem;
+    top: -1.5rem;
+    font-family: var(--font-display);
+    font-size: 8rem;
+    color: var(--border-2);
+    pointer-events: none;
+    line-height: 1;
+    letter-spacing: -4px;
+  }
+  .header-inner { max-width: 860px; margin: 0 auto; position: relative; }
+  .header-eyebrow {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .pill {
+    font-size: 11px; font-weight: 500; padding: 3px 10px;
+    border-radius: 999px; letter-spacing: 0.04em;
+    font-family: var(--font-body);
+  }
+  .pill-academic { background: var(--accent-2-light); color: var(--accent-2); }
+  .pill-score { background: var(--accent-light); color: var(--accent); }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .header-sub {
+    font-size: 14px; color: var(--ink-2); line-height: 1.6; max-width: 520px;
+  }
+
+  .diff-strip {
+    display: flex; gap: 0; flex-wrap: wrap;
+    background: var(--bg-card2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .diff-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px; font-size: 12px; color: var(--ink-2);
+    border-right: 1px solid var(--border);
+  }
+  .diff-item:last-child { border-right: none; }
+  .diff-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-w { background: var(--accent-2); }
+  .dot-r { background: #378ADD; }
+  .dot-s { background: var(--accent-3); }
+
+  /* Main */
+  .main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* Stats */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2rem; color: var(--ink); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 11px; color: var(--ink-3); letter-spacing: 0.03em; }
+
+  /* Phase tabs */
+  .phase-tabs {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem;
+  }
+  .phase-tab {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem 1.1rem;
+    cursor: pointer; transition: all 0.18s; text-align: left;
+    position: relative; overflow: hidden;
+  }
+  .phase-tab::after {
+    content: ''; position: absolute; inset: 0;
+    border-radius: var(--radius);
+    opacity: 0; transition: opacity 0.18s;
+  }
+  .phase-tab:hover { border-color: var(--border); box-shadow: var(--shadow); }
+  .phase-tab.active-1 { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .phase-tab.active-2 { border-color: var(--accent-2); box-shadow: 0 0 0 1px var(--accent-2); }
+  .phase-tab.active-3 { border-color: var(--accent-3); box-shadow: 0 0 0 1px var(--accent-3); }
+  .phase-pill {
+    font-size: 10px; font-weight: 500; padding: 2px 8px;
+    border-radius: 999px; display: inline-block; margin-bottom: 6px;
+    letter-spacing: 0.05em; font-family: var(--font-body);
+  }
+  .pill-1 { background: var(--accent-light); color: var(--accent); }
+  .pill-2 { background: var(--accent-2-light); color: var(--accent-2); }
+  .pill-3 { background: var(--accent-3-light); color: var(--accent-3); }
+  .phase-tab-title {
+    font-family: var(--font-display); font-size: 1rem; color: var(--ink); margin-bottom: 2px;
+  }
+  .phase-tab-months { font-size: 11px; color: var(--ink-3); margin-bottom: 8px; }
+  .prog-bar {
+    height: 3px; background: var(--border);
+    border-radius: 2px; overflow: hidden; margin-bottom: 4px;
+  }
+  .prog-fill { height: 100%; border-radius: 2px; transition: width 0.4s ease; }
+  .fill-1 { background: var(--accent); }
+  .fill-2 { background: var(--accent-2); }
+  .fill-3 { background: var(--accent-3); }
+  .prog-pct { font-size: 10px; color: var(--ink-3); }
+
+  /* Section */
+  .section-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1rem; flex-wrap: wrap; gap: 8px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem; color: var(--ink); font-weight: 400;
+  }
+  .target-badge {
+    font-size: 12px; color: var(--ink-2);
+    background: var(--bg-card2);
+    padding: 4px 12px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  /* Skill filter */
+  .skill-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 1rem;
+  }
+  .skill-btn {
+    font-size: 12px; font-family: var(--font-body);
+    padding: 4px 14px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent; color: var(--ink-2);
+    cursor: pointer; transition: all 0.14s;
+    letter-spacing: 0.02em;
+  }
+  .skill-btn:hover { background: var(--bg-card2); color: var(--ink); }
+  .skill-btn.active-skill {
+    background: var(--bg-card); color: var(--ink);
+    border-color: var(--ink); font-weight: 500;
+  }
+
+  /* Checklist */
+  .checklist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1.5rem; }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 11px 14px;
+    cursor: pointer; transition: all 0.14s; user-select: none;
+  }
+  .check-item:hover { background: var(--bg-card2); border-color: var(--border); }
+  .check-item.done { opacity: 0.45; }
+  .checkbox {
+    width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; margin-top: 1px;
+    border: 1.5px solid var(--ink-3);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.14s;
+  }
+  .check-item.done .checkbox { background: var(--accent); border-color: var(--accent); }
+  .check-body { flex: 1; }
+  .check-text {
+    font-size: 13.5px; color: var(--ink); line-height: 1.5;
+  }
+  .check-item.done .check-text { text-decoration: line-through; color: var(--ink-3); }
+  .check-tag {
+    font-size: 10px; font-weight: 500; margin-left: 7px;
+    padding: 1px 7px; border-radius: 999px; white-space: nowrap;
+    vertical-align: middle; letter-spacing: 0.04em;
+    font-family: var(--font-body);
+  }
+  .tag-l { background: var(--tag-l-bg); color: var(--tag-l); }
+  .tag-r { background: var(--tag-r-bg); color: var(--tag-r); }
+  .tag-w { background: var(--tag-w-bg); color: var(--tag-w); }
+  .tag-s { background: var(--tag-s-bg); color: var(--tag-s); }
+  .tag-v { background: var(--tag-v-bg); color: var(--tag-v); }
+
+  /* Tip */
+  .tip-box {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-2);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px;
+  }
+  .tip-label {
+    font-size: 10px; font-weight: 500; color: var(--accent-2);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 4px; font-family: var(--font-body);
+  }
+  .tip-text { font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+
+  /* Footer */
+  .footer {
+    text-align: center; padding: 1.5rem;
+    font-size: 11px; color: var(--ink-3);
+    border-top: 1px solid var(--border);
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 600px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .phase-tabs { grid-template-columns: 1fr; }
+    .header { padding: 1.75rem 1.25rem 1.5rem; }
+    .header::before { font-size: 5rem; }
+    .main { padding: 1.5rem 1rem 3rem; }
+    .diff-item { padding: 8px 14px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">
+      <span class="pill pill-academic">IELTS Academic</span>
+      <span class="pill pill-score">현재 7.0 → 목표 7.5+</span>
+    </div>
+    <h1>6개월 <em>학습 계획</em></h1>
+    <p class="header-sub">단계별 체크리스트로 진도를 관리하세요. 항목을 클릭하면 완료 처리됩니다.</p>
+  </div>
+</header>
+
+<div class="diff-strip">
+  <div class="diff-item"><span class="diff-dot dot-w"></span>Writing Task 1: 그래프·차트·다이어그램 분석 (편지 아님)</div>
+  <div class="diff-item"><span class="diff-dot dot-r"></span>Reading: 학술 지문 3개 (60분, Passage 3 난이도 높음)</div>
+  <div class="diff-item"><span class="diff-dot dot-s"></span>Speaking: 학문적 주제 빈도 높음, 구조화 답변 필수</div>
+</div>
+
+<main class="main">
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="totalDone">0</div>
+      <div class="stat-label">완료한 항목</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="totalItems">0</div>
+      <div class="stat-label">전체 항목</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">7.0</div>
+      <div class="stat-label">현재 점수</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">7.5+</div>
+      <div class="stat-label">목표 점수</div>
+    </div>
+  </div>
+
+  <div class="phase-tabs" id="phaseTabs">
+    <div class="phase-tab active-1" onclick="switchPhase(0)" id="phaseTab0">
+      <div class="phase-pill pill-1">PHASE 1</div>
+      <div class="phase-tab-title">Academic 적응</div>
+      <div class="phase-tab-months">1–2개월</div>
+      <div class="prog-bar"><div class="prog-fill fill-1" id="pf0" style="width:0%"></div></div>
+      <div class="prog-pct" id="pp0">0%</div>
+    </div>
+    <div class="phase-tab" onclick="switchPhase(1)" id="phaseTab1">
+      <div class="phase-pill pill-2">PHASE 2</div>
+      <div class="phase-tab-title">심화 실전 훈련</div>
+      <div class="phase-tab-months">3–4개월</div>
+      <div class="prog-bar"><div class="prog-fill fill-2" id="pf1" style="width:0%"></div></div>
+      <div class="prog-pct" id="pp1">0%</div>
+    </div>
+    <div class="phase-tab" onclick="switchPhase(2)" id="phaseTab2">
+      <div class="phase-pill pill-3">PHASE 3</div>
+      <div class="phase-tab-title">점수 극대화</div>
+      <div class="phase-tab-months">5–6개월</div>
+      <div class="prog-bar"><div class="prog-fill fill-3" id="pf2" style="width:0%"></div></div>
+      <div class="prog-pct" id="pp2">0%</div>
+    </div>
+  </div>
+
+  <div class="section-row">
+    <span class="section-title" id="phaseHeading">Phase 1 — Academic 적응</span>
+    <span class="target-badge" id="phaseTarget">목표: Academic 포맷 완전 파악</span>
+  </div>
+
+  <div class="skill-tabs" id="skillTabs"></div>
+  <div class="checklist" id="checklistEl"></div>
+
+  <div class="tip-box">
+    <div class="tip-label">학습 팁</div>
+    <p class="tip-text" id="tipText"></p>
+  </div>
+
+</main>
+
+<footer class="footer">IELTS Academic Study Planner · jubo.kim</footer>
+
+<script>
+const PHASES = [
+  {
+    heading: 'Phase 1 — Academic 적응',
+    target: '목표: Academic 포맷 완전 파악',
+    tip: 'Academic Reading은 General보다 훨씬 어렵습니다. 과학·사회·역사 관련 학술 지문에 익숙해지는 것이 이 단계의 핵심이에요. The Guardian, BBC Future, Scientific American을 매일 읽으세요.',
+    items: [
+      { text: 'Academic 모의시험 1회 — 현재 점수 및 약점 파악', tag: 'tag-r', skill: 'Reading' },
+      { text: 'Academic vs General 차이점 정리 (특히 Writing Task 1)', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Writing Task 1 — 그래프 유형 6가지 파악 (bar, line, pie, table, map, process)', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Task 1 그래프 묘사 기본 표현 20개 암기 (rose sharply, remained steady 등)', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Academic Reading — 학술 지문 스키밍 연습 (지문당 1분 내 주제 파악)', tag: 'tag-r', skill: 'Reading' },
+      { text: 'Reading Passage 3 (가장 어려운 지문) 유형 구조 이해', tag: 'tag-r', skill: 'Reading' },
+      { text: 'Listening Section 3–4 (세미나·강의) 유형 집중 청취', tag: 'tag-l', skill: 'Listening' },
+      { text: 'Speaking Part 2 — 추상적·학술적 주제 (education, technology) 연습', tag: 'tag-s', skill: 'Speaking' },
+      { text: 'Academic Word List(AWL) 570단어 학습 시작 (Anki 덱 활용)', tag: 'tag-v', skill: 'Vocabulary' },
+      { text: '매일 학술 기사 1편 읽기 루틴 시작 (The Economist, BBC Future)', tag: 'tag-r', skill: 'Reading' },
+    ]
+  },
+  {
+    heading: 'Phase 2 — 심화 실전 훈련',
+    target: '목표: 7.0 → 7.5 돌파',
+    tip: 'Task 1은 Overview(전체 경향 요약) 문장이 점수를 결정합니다. 그래프를 보자마자 "가장 눈에 띄는 특징 2가지"를 1–2문장으로 요약하는 훈련을 반복하세요. Task 2는 논리 구조(thesis → argument → evidence → conclusion)를 고정시키세요.',
+    items: [
+      { text: 'Task 1 — 6가지 그래프 유형 각 3편씩 작성 (총 18편)', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Task 1 Overview 문장 작성 훈련 — 매 지문마다 1문장 요약', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Task 2 — 주 2편 작성 & 피드백 (AI 채점 또는 튜터)', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Task 2 — 양면 논의(discuss both views) 구조 완성', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Reading — True/False/Not Given vs Yes/No/Not Given 차이 완전 이해', tag: 'tag-r', skill: 'Reading' },
+      { text: 'Reading — Matching Information & Matching Features 유형 10지문', tag: 'tag-r', skill: 'Reading' },
+      { text: 'Listening — 받아쓰기(dictation) 매일 10분 (Section 4 강의 음원)', tag: 'tag-l', skill: 'Listening' },
+      { text: 'Speaking Part 3 — 추상적 질문 답변 구조화 훈련 (PEEL 기법)', tag: 'tag-s', skill: 'Speaking' },
+      { text: 'AWL 570단어 절반 (285개) 이상 완료', tag: 'tag-v', skill: 'Vocabulary' },
+      { text: '전체 모의시험 주 1회 (시간 엄수, 오답 노트 작성)', tag: 'tag-r', skill: 'Reading' },
+    ]
+  },
+  {
+    heading: 'Phase 3 — 점수 극대화',
+    target: '목표: 7.5+ 안정화 & 시험 등록',
+    tip: '시험 4주 전부터는 실제 시험과 동일한 환경에서 연습하세요. IELTS 공식 채점 기준(Band Descriptors)을 직접 읽고, 특히 Grammatical Range & Accuracy와 Lexical Resource 항목을 자신의 글과 비교해 보세요.',
+    items: [
+      { text: 'Cambridge IELTS Academic 최신 3–4권 전체 실전 풀이', tag: 'tag-r', skill: 'Reading' },
+      { text: 'Task 1 — 복합 차트(mixed chart) 작성 훈련 5편 이상', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Task 2 — 어휘 다양성(Lexical Resource) 집중 개선', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Writing 공식 Band Descriptors 숙지 (Task Achievement, Coherence, Lexical, Grammar)', tag: 'tag-w', skill: 'Writing' },
+      { text: 'Reading — 60분 내 3 passages 완료 훈련 (시간 분배: 17/20/23분)', tag: 'tag-r', skill: 'Reading' },
+      { text: 'Listening — 예측(prediction) 전략 완성 (빈칸 전 키워드 읽기)', tag: 'tag-l', skill: 'Listening' },
+      { text: 'Speaking — 모의 인터뷰 3회 이상 (원어민/AI 파트너, 녹음 후 자기 채점)', tag: 'tag-s', skill: 'Speaking' },
+      { text: 'AWL 570단어 전체 완성 & 예문 작문', tag: 'tag-v', skill: 'Vocabulary' },
+      { text: 'IELTS 시험 공식 등록 완료 (British Council 또는 IDP)', tag: 'tag-v', skill: 'Vocabulary' },
+      { text: '결과 수령 후 재응시 또는 목표 달성 플랜 수립', tag: 'tag-v', skill: 'Vocabulary' },
+    ]
+  }
+];
+
+const TAG_LABELS = { 'tag-l': 'L', 'tag-r': 'R', 'tag-w': 'W', 'tag-s': 'S', 'tag-v': 'V' };
+const TAG_NAMES = { 'tag-l': 'Listening', 'tag-r': 'Reading', 'tag-w': 'Writing', 'tag-s': 'Speaking', 'tag-v': 'Vocabulary' };
+const SKILLS = ['전체', 'Listening', 'Reading', 'Writing', 'Speaking', 'Vocabulary'];
+const STORAGE_KEY = 'ielts_academic_checked';
+
+let checked = {};
+let currentPhase = 0;
+let currentSkill = '전체';
+
+function loadChecked() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) checked = JSON.parse(raw);
+  } catch(e) {}
+}
+function saveChecked() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(checked)); } catch(e) {}
+}
+
+function key(pi, i) { return 'p' + pi + '_' + i; }
+
+function updateStats() {
+  const total = PHASES.reduce((a, ph) => a + ph.items.length, 0);
+  const done = PHASES.reduce((a, ph, pi) => a + ph.items.filter((_, i) => checked[key(pi, i)]).length, 0);
+  document.getElementById('totalDone').textContent = done;
+  document.getElementById('totalItems').textContent = total;
+  PHASES.forEach((ph, pi) => {
+    const d = ph.items.filter((_, i) => checked[key(pi, i)]).length;
+    const pct = Math.round(d / ph.items.length * 100);
+    document.getElementById('pf' + pi).style.width = pct + '%';
+    document.getElementById('pp' + pi).textContent = pct + '%';
+  });
+}
+
+function renderSkillTabs() {
+  const el = document.getElementById('skillTabs');
+  el.innerHTML = '';
+  SKILLS.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'skill-btn' + (s === currentSkill ? ' active-skill' : '');
+    btn.textContent = s;
+    btn.onclick = () => { currentSkill = s; renderSkillTabs(); renderChecklist(); };
+    el.appendChild(btn);
+  });
+}
+
+function renderChecklist() {
+  const ph = PHASES[currentPhase];
+  const el = document.getElementById('checklistEl');
+  el.innerHTML = '';
+  ph.items.forEach((item, i) => {
+    if (currentSkill !== '전체' && TAG_NAMES[item.tag] !== currentSkill) return;
+    const k = key(currentPhase, i);
+    const done = !!checked[k];
+    const div = document.createElement('div');
+    div.className = 'check-item' + (done ? ' done' : '');
+    div.innerHTML =
+      '<div class="checkbox">' +
+        (done ? '<svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 3.5L4 6.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '') +
+      '</div>' +
+      '<div class="check-body">' +
+        '<span class="check-text">' + item.text +
+          '<span class="check-tag ' + item.tag + '">' + TAG_LABELS[item.tag] + '</span>' +
+        '</span>' +
+      '</div>';
+    div.onclick = () => {
+      checked[k] = !checked[k];
+      saveChecked();
+      renderChecklist();
+      updateStats();
+    };
+    el.appendChild(div);
+  });
+}
+
+function switchPhase(idx) {
+  currentPhase = idx;
+  currentSkill = '전체';
+  [0, 1, 2].forEach(i => {
+    const tab = document.getElementById('phaseTab' + i);
+    tab.className = 'phase-tab' + (i === idx ? ' active-' + (i + 1) : '');
+  });
+  const ph = PHASES[idx];
+  document.getElementById('phaseHeading').textContent = ph.heading;
+  document.getElementById('phaseTarget').textContent = ph.target;
+  document.getElementById('tipText').textContent = ph.tip;
+  renderSkillTabs();
+  renderChecklist();
+}
+
+loadChecked();
+switchPhase(0);
+updateStats();
+</script>
+</body>
+</html>
